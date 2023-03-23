@@ -25,10 +25,12 @@ public class ReservationMenu {
 	
 	private void _createReservation() {
 		String hotelName = _inputHotelName();
+		String roomType = _inputRoomType();
 		String reservationMonth = _inputReservationMonth();
 		int reservationStart = _inputReservationStart();
 		int reservationEnd = _inputReservationEnd(reservationStart);
-		Room room = _inputRoomInformation();
+		
+		Room room = _createRoom(roomType);
 		
 		reservationInfos[_roomCount++] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
   		if(reservationInfos[_roomCount-1] != null) {
@@ -36,6 +38,27 @@ public class ReservationMenu {
   		}
   		else {
   			System.out.println("Reservation not created!\n");
+		}
+	}
+	
+	private Room _createRoom(String roomType) {
+		if(roomType.equals("Single")) {
+			return new SingleRoom();
+		}
+		else if(roomType.equals("Double")) {
+			return new DoubleRoom();
+		}
+		else if(roomType.equals("Club")) {
+			return new ClubRoom();
+		}
+		else if(roomType.equals("Family")) {
+			return new FamilyRoom();
+		}
+		else if(roomType.equals("Family with View")) {
+			return new FamilyWithViewRoom();
+		}
+		else{
+			return new SuiteRoom();
 		}
 	}
 	
@@ -54,45 +77,18 @@ public class ReservationMenu {
   		}
 		return reservationEnd;
 	}
-	
-	private Room _inputRoomInformation() {
-		String roomTypeString = _takeRoomType();
-		int dailyCost = _takeDailyCost();
-		boolean hasBath = _takeHasBath();
-		int roomSize = _takeRoomSize();
-		Room room = new Room(roomTypeString, dailyCost, roomSize, hasBath);
-		return room;
-	}
-	
-	private String _takeRoomType() {
+
+	private String _inputRoomType() {
 		System.out.println("Hotel Type: ");
   		String roomType = ms.nextLine();
   		
   		if(!Arrays.asList(roomTypes).contains(roomType)) {
   			System.out.println("Invalid input.\n");
-  			roomType = _takeRoomType();
+  			roomType = _inputRoomType();
   		}
   		return roomType;
 	}
-	
-	private int _takeDailyCost() {
-		System.out.println("Daily Cost: ");
-  		int dailyCost = ms.nextInt();
-  		return dailyCost;
-	}
-	
-	private int _takeRoomSize() {
-		System.out.println("Room Size: ");
-  		int roomSize = ms.nextInt();
-  		return roomSize;
-	}
-	
-	private	boolean _takeHasBath() {
-		System.out.println("Has Bath: ");
-  		boolean hasBath = ms.nextBoolean();
-  		return hasBath;
-	}
-	
+
 	private String _inputHotelName() {
 		System.out.println("Hotel Name: ");
   		String hotelName = ms.nextLine();

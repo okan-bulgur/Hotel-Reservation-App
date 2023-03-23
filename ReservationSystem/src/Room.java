@@ -1,16 +1,9 @@
 public class Room{
 	
-	private String _roomType;
-	private int _dailyCost;
-	private int _roomSize;
-	private boolean _hasBath;
-	
-	public Room(String roomType, int dailyCost, int roomSize, boolean hasBath) {
-		set_roomType(roomType);
-		set_dailyCost(dailyCost);
-		set_roomSize(roomSize);
-		set_hasBath(hasBath);
-	}
+	protected String _roomType;
+	protected int _dailyCost;
+	protected int _roomSize;
+	protected boolean _hasBath;
 
 	public String get_roomType() {
 		return _roomType;
