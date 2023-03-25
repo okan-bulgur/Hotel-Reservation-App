@@ -7,7 +7,7 @@ public class Reservation {
 	private Room _room;
 	private int _dailyCost;
 	
-	private static int totalNumOfReservation = 0;
+	public static int totalNumOfReservation = 0;
 	
 	
 	public Reservation(String hotelName, String reservationMonth, int reservationStart, int reservationEnd, Room room) {
@@ -17,7 +17,6 @@ public class Reservation {
 		setReservationEnd(reservationEnd);
 		setRoom(room);
 		setDailyCost();
-		totalNumOfReservation++;
 	}
 	
 	public void setHotelName(String hotelName) {
@@ -68,6 +67,10 @@ public class Reservation {
 		return this._dailyCost;
 	}
 	
+	public static int getTotalNumOfReservation() {
+		return totalNumOfReservation;
+	}
+	
 	private int calculateTotalPrice() {
 		String month = getReservationMonth();
 		int totalDay = getReservationEnd() - getReservationStart();
@@ -91,4 +94,5 @@ public class Reservation {
 	public void displayTotalNumberOfReservation() {
 		System.out.println(totalNumOfReservation + "reservation created so far.\n");
 	}
+
 }

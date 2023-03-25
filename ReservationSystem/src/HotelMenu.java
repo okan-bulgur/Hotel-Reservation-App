@@ -1,12 +1,12 @@
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class ReservationMenu {
+public class HotelMenu {
 	
 	private Scanner ms = new Scanner(System.in);
 	
 	private final int ROOMNO = 10;  
-	private int _roomCount = 0;
+	
 	public String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	public String roomTypes[] = {"Single", "Double", "Club", "Family", "Family with View", "Suite"};
 	private Reservation [] reservationInfos = new Reservation[ROOMNO];
@@ -24,12 +24,13 @@ public class ReservationMenu {
 		String roomType = _inputRoomType();
 		String reservationMonth = _inputReservationMonth();
 		int reservationStart = _inputReservationStart();
-		int reservationEnd = _inputReservationEnd(reservationStart);
-		
+		int reservationEnd = _inputReservationEnd(reservationStart);	
 		Room room = _createRoom(roomType);
 		
-		reservationInfos[_roomCount++] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
-  		if(reservationInfos[_roomCount-1] != null) {
+		reservationInfos[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
+		Reservation.totalNumOfReservation++;
+		
+  		if(reservationInfos[Reservation.getTotalNumOfReservation()-1] != null) {
   			System.out.println("Reservation created!\n");
   		}
   		else {
@@ -42,11 +43,12 @@ public class ReservationMenu {
 		String reservationMonth = _inputReservationMonth();
 		int reservationStart = _inputReservationStart();
 		int reservationEnd = _inputReservationEnd(reservationStart);
-		
 		Room room = _createRoom(roomType);
 		
-		reservationInfos[_roomCount++] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
-  		if(reservationInfos[_roomCount-1] != null) {
+		reservationInfos[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
+		Reservation.totalNumOfReservation++;
+		
+  		if(reservationInfos[Reservation.getTotalNumOfReservation()-1] != null) {
   			System.out.println("Reservation created!\n");
   		}
   		else {
@@ -75,7 +77,6 @@ public class ReservationMenu {
 		}
 	}
 	
-	
 	private int _checkReservationStart(int reservationStart) {
 		if(reservationStart <= 0 || reservationStart > 30) {
 			System.out.println("Invalid input. Please enter again.\n");
@@ -92,7 +93,6 @@ public class ReservationMenu {
 		return reservationEnd;
 	}
 
-	
 	private String _inputRoomType() {
 		System.out.println("Hotel Type: ");
   		String roomType = ms.nextLine();
@@ -136,8 +136,7 @@ public class ReservationMenu {
   		reservationEnd = _checkReservationEnd(reservationStart, reservationEnd);
   		return reservationEnd;
 	}
-	
-	
+
 	private void _roomDisplay() {
 		if(reservationInfos[0] == null) {
   			System.out.println("No room has been created yet.\n");
@@ -151,28 +150,28 @@ public class ReservationMenu {
 	
 	private void _displayRoomTypesInfo() {
 		System.out.println(
-				"ROOM INFOS:\n"
+				"\nROOM INFOS:\n\n"
 				+ "Room Type: Single, Daily Cost: 100, Room Size: 15, Has Bath: false\n"
 				+ "Room Type: Double, Daily Cost: 180, Room Size: 30, Has Bath: false\n"
 				+ "Room Type: Club, Daily Cost: 250, Room Size: 45, Has Bath: true\n"
 				+ "Room Type: Family, Daily Cost: 400, Room Size: 50, Has Bath: false\n"
 				+ "Room Type: Family With View, Daily Cost: 450, Room Size: 50, Has Bath: true\n"
-				+ "Room Type: Suite, Daily Cost: 650, Room Size: 80, Has Bath: true"
+				+ "Room Type: Suite, Daily Cost: 650, Room Size: 80, Has Bath: true\n"
 				);
 	}
 	
-	
 	public static void main(String[] args) {
 		
-		ReservationMenu reservation = new ReservationMenu();
+		HotelMenu hotelMenu = new HotelMenu();
 	  
 		while(true) {
-			String userInput = reservation.menuScreen();
+			String userInput = hotelMenu.menuScreen();
 			
 			switch(userInput) {
+			
 		  		case "1":
-		  			if(reservation._roomCount < reservation.ROOMNO) {
-		  				reservation._createReservationInitialTypeRoom("Single");
+		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
+		  				hotelMenu._createReservationInitialTypeRoom("Single");
 					}
 		  			else {		  				
 		  				System.out.println("There are no room left in the hotel.\n");
@@ -180,9 +179,9 @@ public class ReservationMenu {
 			  		break;
 			  		
 		  		case "2":
-		  			if(reservation._roomCount < reservation.ROOMNO) {
-		  				reservation._displayRoomTypesInfo();
-		  				reservation._createReservation();
+		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
+		  				hotelMenu._displayRoomTypesInfo();
+		  				hotelMenu._createReservation();
 					}
 		  			else {		  				
 		  				System.out.println("There are no room left in the hotel.\n");
@@ -190,11 +189,11 @@ public class ReservationMenu {
 			  		break;
 			  	
 			  	case "3":
-			  		reservation._roomDisplay();
+			  		hotelMenu._roomDisplay();
 			  		break;
 		  	
 			  	case "4":
-			  		System.out.println(reservation._roomCount + " reservations created so far.\n");
+			  		System.out.println(Reservation.getTotalNumOfReservation() + " reservations created so far.\n");
 			  		break;
 			  		
 			  	case "5":
