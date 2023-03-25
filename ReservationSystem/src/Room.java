@@ -40,6 +40,4 @@ public class Room{
 	public void setHasBath(boolean _hasBath) {
 		this._hasBath = _hasBath;
 	}
-	
-	
 }

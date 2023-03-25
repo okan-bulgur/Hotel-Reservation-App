@@ -143,8 +143,8 @@ public class ReservationMenu {
   			System.out.println("No room has been created yet.\n");
 		}
 		else {
-			for(int room = 0; room < reservationInfos.length && reservationInfos[room] != null; room++) {
-	  			reservationInfos[room].displayInfo();
+			for(int reservation = 0; reservation < reservationInfos.length && reservationInfos[reservation] != null; reservation++) {
+	  			reservationInfos[reservation].displayInfo();
 	  		}
 		}
 	}

@@ -84,8 +84,8 @@ public class Reservation {
 	}
 	
 	public void displayInfo() {
-		String.format("Reservation for a %s room in %s starts on %s %d and ends on %s %d.", getRoom().getRoomType(), getHotelName(), getReservationMonth(), getReservationStart(), getReservationMonth(), getReservationEnd());
-		String.format("Reservation has a total cost of $%d.", calculateTotalPrice());
+		System.out.println("Reservation for a "+ getRoom().getRoomType() +" room in "+ getHotelName() +" starts on "+ getReservationMonth() +" "+ getReservationStart() +" and ends on "+ getReservationMonth() +" "+ getReservationEnd() +".");
+		System.out.println("Reservation has a total cost of $"+ calculateTotalPrice() +"\n");
 	}
 	
 	public void displayTotalNumberOfReservation() {
