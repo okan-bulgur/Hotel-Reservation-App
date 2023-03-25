@@ -5,35 +5,39 @@ public class Room{
 	protected int _roomSize;
 	protected boolean _hasBath;
 
-	public String get_roomType() {
+	public Room(){
+		
+	}
+
+	public String getRoomType() {
 		return _roomType;
 	}
 
-	public void set_roomType(String _roomType) {
+	public void setRoomType(String _roomType) {
 		this._roomType = _roomType;
 	}
 
-	public int get_dailyCost() {
+	public int getDailyCost() {
 		return _dailyCost;
 	}
 
-	public void set_dailyCost(int _dailyCost) {
+	public void setDailyCost(int _dailyCost) {
 		this._dailyCost = _dailyCost;
 	}
 
-	public int get_roomSize() {
+	public int getRoomSize() {
 		return _roomSize;
 	}
 
-	public void set_roomSize(int _roomSize) {
+	public void setRoomSize(int _roomSize) {
 		this._roomSize = _roomSize;
 	}
 
-	public boolean is_hasBath() {
+	public boolean isHasBath() {
 		return _hasBath;
 	}
 
-	public void set_hasBath(boolean _hasBath) {
+	public void setHasBath(boolean _hasBath) {
 		this._hasBath = _hasBath;
 	}
 	

@@ -12,13 +12,9 @@ public class ReservationMenu {
 	private Reservation [] reservationInfos = new Reservation[ROOMNO];
 	
 	private String menuScreen() {
-		System.out.println(
-				  "1. Create new Reservation\n"
-		  		+ "2. Display all Reservation\n"
-				+ "3. Display the total number of reservations\n"
-		  		+ "0. Exit\n"
-		  		+ "Enter: ");
-		  
+		for(MenuOption menuOption : MenuOption.values()) {
+			System.out.printf(menuOption.getOption());
+		}
 		String userInput = ms.next();
 		return userInput;
 	}
@@ -26,6 +22,23 @@ public class ReservationMenu {
 	private void _createReservation() {
 		String hotelName = _inputHotelName();
 		String roomType = _inputRoomType();
+		String reservationMonth = _inputReservationMonth();
+		int reservationStart = _inputReservationStart();
+		int reservationEnd = _inputReservationEnd(reservationStart);
+		
+		Room room = _createRoom(roomType);
+		
+		reservationInfos[_roomCount++] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
+  		if(reservationInfos[_roomCount-1] != null) {
+  			System.out.println("Reservation created!\n");
+  		}
+  		else {
+  			System.out.println("Reservation not created!\n");
+		}
+	}
+	
+	private void _createReservationInitialTypeRoom(String roomType) {
+		String hotelName = _inputHotelName();
 		String reservationMonth = _inputReservationMonth();
 		int reservationStart = _inputReservationStart();
 		int reservationEnd = _inputReservationEnd(reservationStart);
@@ -62,6 +75,7 @@ public class ReservationMenu {
 		}
 	}
 	
+	
 	private int _checkReservationStart(int reservationStart) {
 		if(reservationStart <= 0 || reservationStart > 30) {
 			System.out.println("Invalid input. Please enter again.\n");
@@ -78,6 +92,7 @@ public class ReservationMenu {
 		return reservationEnd;
 	}
 
+	
 	private String _inputRoomType() {
 		System.out.println("Hotel Type: ");
   		String roomType = ms.nextLine();
@@ -122,6 +137,7 @@ public class ReservationMenu {
   		return reservationEnd;
 	}
 	
+	
 	private void _roomDisplay() {
 		if(reservationInfos[0] == null) {
   			System.out.println("No room has been created yet.\n");
@@ -133,6 +149,19 @@ public class ReservationMenu {
 		}
 	}
 	
+	private void _displayRoomTypesInfo() {
+		System.out.println(
+				"ROOM INFOS:\n"
+				+ "Room Type: Single, Daily Cost: 100, Room Size: 15, Has Bath: false\n"
+				+ "Room Type: Double, Daily Cost: 180, Room Size: 30, Has Bath: false\n"
+				+ "Room Type: Club, Daily Cost: 250, Room Size: 45, Has Bath: true\n"
+				+ "Room Type: Family, Daily Cost: 400, Room Size: 50, Has Bath: false\n"
+				+ "Room Type: Family With View, Daily Cost: 450, Room Size: 50, Has Bath: true\n"
+				+ "Room Type: Suite, Daily Cost: 650, Room Size: 80, Has Bath: true"
+				);
+	}
+	
+	
 	public static void main(String[] args) {
 		
 		ReservationMenu reservation = new ReservationMenu();
@@ -143,6 +172,16 @@ public class ReservationMenu {
 			switch(userInput) {
 		  		case "1":
 		  			if(reservation._roomCount < reservation.ROOMNO) {
+		  				reservation._createReservationInitialTypeRoom("Single");
+					}
+		  			else {		  				
+		  				System.out.println("There are no room left in the hotel.\n");
+		  			}
+			  		break;
+			  		
+		  		case "2":
+		  			if(reservation._roomCount < reservation.ROOMNO) {
+		  				reservation._displayRoomTypesInfo();
 		  				reservation._createReservation();
 					}
 		  			else {		  				
@@ -150,15 +189,15 @@ public class ReservationMenu {
 		  			}
 			  		break;
 			  	
-			  	case "2":
+			  	case "3":
 			  		reservation._roomDisplay();
 			  		break;
 		  	
-			  	case "3":
+			  	case "4":
 			  		System.out.println(reservation._roomCount + " reservations created so far.\n");
 			  		break;
 			  		
-			  	case "0":
+			  	case "5":
 			  		System.out.println("Exit...");
 			  		System.exit(0);
 			  		break;

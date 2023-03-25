@@ -41,7 +41,7 @@ public class Reservation {
 	}
 	
 	public void setDailyCost() {
-		this._dailyCost = getRoom().get_dailyCost();
+		this._dailyCost = getRoom().getDailyCost();
 	}
 	
 	public String getHotelName() {
@@ -84,7 +84,8 @@ public class Reservation {
 	}
 	
 	public void displayInfo() {
-		System.out.println("Reservation for a " + getRoom().get_roomType() + " room in "+ getHotelName() + " starts on " + getReservationMonth() + " " + getReservationStart() + " and ends on " + getReservationMonth() + " " + getReservationEnd() + ". Reservation has a total cost of " + calculateTotalPrice() +  "$.");
+		String.format("Reservation for a %s room in %s starts on %s %d and ends on %s %d.", getRoom().getRoomType(), getHotelName(), getReservationMonth(), getReservationStart(), getReservationMonth(), getReservationEnd());
+		String.format("Reservation has a total cost of $%d.", calculateTotalPrice());
 	}
 	
 	public void displayTotalNumberOfReservation() {
