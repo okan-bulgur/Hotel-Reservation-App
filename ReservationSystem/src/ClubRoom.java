@@ -1,9 +1,15 @@
 public class ClubRoom extends Room{
+	
+	public static String roomType = "Club";
+	public static int dailyCost = 250;
+	public static int roomSize = 45;
+	public static boolean hasBath = true;
+	
 	public ClubRoom() {
 		super();
-		setRoomType("Club");
-		setDailyCost(250);
-		setRoomSize(45);
-		setHasBath(true);
+		setRoomType(roomType);
+		setDailyCost(dailyCost);
+		setRoomSize(roomSize);
+		setHasBath(hasBath);
 	}
 }

@@ -106,8 +106,8 @@ public class HotelMenu {
 
 	private String _inputHotelName() {
 		System.out.println("Hotel Name: ");
+		ms.nextLine(); //to fix error
   		String hotelName = ms.nextLine();
-  		ms.nextLine(); //to fix error
   		return hotelName;
 	}
 	
@@ -151,12 +151,12 @@ public class HotelMenu {
 	private void _displayRoomTypesInfo() {
 		System.out.println(
 				"\nROOM INFOS:\n\n"
-				+ "Room Type: Single, Daily Cost: 100, Room Size: 15, Has Bath: false\n"
-				+ "Room Type: Double, Daily Cost: 180, Room Size: 30, Has Bath: false\n"
-				+ "Room Type: Club, Daily Cost: 250, Room Size: 45, Has Bath: true\n"
-				+ "Room Type: Family, Daily Cost: 400, Room Size: 50, Has Bath: false\n"
-				+ "Room Type: Family With View, Daily Cost: 450, Room Size: 50, Has Bath: true\n"
-				+ "Room Type: Suite, Daily Cost: 650, Room Size: 80, Has Bath: true\n"
+				+ "Room Type: "+ SingleRoom.roomType +", Daily Cost: "+ SingleRoom.dailyCost +", Room Size: "+ SingleRoom.roomSize +", Has Bath: "+ SingleRoom.hasBath +"\n"
+				+ "Room Type: "+ DoubleRoom.roomType +", Daily Cost: "+ DoubleRoom.dailyCost +", Room Size: "+ DoubleRoom.roomSize +", Has Bath: "+ DoubleRoom.hasBath +"\n"
+				+ "Room Type: "+ ClubRoom.roomType +", Daily Cost: "+ ClubRoom.dailyCost +", Room Size: "+ ClubRoom.roomSize +", Has Bath: "+ ClubRoom.hasBath +"\n"
+				+ "Room Type: "+ FamilyRoom.roomType +", Daily Cost: "+ FamilyRoom.dailyCost +", Room Size: "+ FamilyRoom.roomSize +", Has Bath: "+ FamilyRoom.hasBath +"\n"
+				+ "Room Type: "+ FamilyWithViewRoom.roomType +", Daily Cost: "+ FamilyWithViewRoom.dailyCost +", Room Size: "+ FamilyWithViewRoom.roomSize +", Has Bath: "+ FamilyWithViewRoom.hasBath +"\n"
+				+ "Room Type: "+ SuiteRoom.roomType +", Daily Cost: "+ SuiteRoom.dailyCost +", Room Size: "+ SuiteRoom.roomSize +", Has Bath: "+ SuiteRoom.hasBath +"\n"
 				);
 	}
 	
