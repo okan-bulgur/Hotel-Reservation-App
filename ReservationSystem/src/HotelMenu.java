@@ -1,14 +1,12 @@
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class HotelMenu {
 	
 	private Scanner ms = new Scanner(System.in);
-	
-	private final int ROOMNO = 10;  
-	
-	public String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	public String roomTypes[] = {"Single", "Double", "Club", "Family", "Family with View", "Suite"};
+	private final int ROOMNO = 3;  
 	private Reservation [] reservationInfos = new Reservation[ROOMNO];
 	
 	private String menuScreen() {
@@ -19,13 +17,104 @@ public class HotelMenu {
 		return userInput;
 	}
 	
-	private void _createReservation() {
-		String hotelName = _inputHotelName();
-		String roomType = _inputRoomType();
-		String reservationMonth = _inputReservationMonth();
-		int reservationStart = _inputReservationStart();
-		int reservationEnd = _inputReservationEnd(reservationStart);	
-		Room room = _createRoom(roomType);
+	private void removeReservationByCity() {
+		System.out.println("Type a city name for remove:");
+		String cityName = ms.next();
+		String hotelName;
+		
+		List<Reservation> listReservation = Arrays.asList(reservationInfos);
+		Iterator<Reservation> itr = listReservation.listIterator();
+		
+		while(itr.hasNext()) {
+			hotelName = itr.next().getHotelName();
+			if(hotelName.contains(cityName)) {
+				itr.remove();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		HotelMenu hotelMenu = new HotelMenu();
+		
+		Create create = new Create(hotelMenu.reservationInfos, hotelMenu.ms);
+		Display display = new Display(hotelMenu.reservationInfos);
+		Inputs inputs = new Inputs(hotelMenu.ms);
+	  
+		while(true) {
+			String userInput = hotelMenu.menuScreen();
+			
+			switch(userInput) {
+			
+		  		case "1":
+		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
+		  				create.createReservationInitialTypeRoom("Single");
+					}
+		  			else {		  				
+		  				System.out.println("There are no room left in the hotel.\n");
+		  			}
+			  		break;
+			  		
+		  		case "2":
+		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
+		  				display.displayRoomTypesInfo();
+		  				create.createReservation();
+					}
+		  			else {		  				
+		  				System.out.println("There are no room left in the hotel.\n");
+		  			}
+			  		break;
+			  	
+			  	case "3":
+			  		display.roomDisplay();
+			  		break;
+		  	
+			  	case "4":
+			  		System.out.println(Reservation.getTotalNumOfReservation() + " reservations created so far.\n");
+			  		break;
+			  		
+			  	case "5":
+			  		String cityName = inputs.inputCityName();
+			  		display.displayReservationByCity(cityName);
+			  		break;
+			  		
+			  	case "6":
+			  		hotelMenu.removeReservationByCity();
+			  		break;
+			  		
+			  	case "7":
+			  		System.out.println("Exit...");
+			  		System.exit(0);
+			  		break;
+			  	
+			  	default:
+			  		System.out.println("Please enter valid input!\n");
+			  		break;  		
+			}
+		}
+    }
+}
+
+class Create{
+	
+	private Reservation [] reservationInfos;
+	private Scanner scanner;
+	private Inputs inputs;
+	
+	public Create(Reservation [] reservationInfos, Scanner scanner) {
+		this.reservationInfos = reservationInfos;
+		this.scanner = scanner;
+		inputs = new Inputs(this.scanner);
+	}
+	
+	void createReservation() {
+		
+		String hotelName = inputs.inputHotelName();
+		String roomType = inputs.inputRoomType();
+		String reservationMonth = inputs.inputReservationMonth();
+		int reservationStart = inputs.inputReservationStart();
+		int reservationEnd = inputs.inputReservationEnd(reservationStart);	
+		Room room = createRoom(roomType);
 		
 		reservationInfos[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
 		Reservation.totalNumOfReservation++;
@@ -38,12 +127,13 @@ public class HotelMenu {
 		}
 	}
 	
-	private void _createReservationInitialTypeRoom(String roomType) {
-		String hotelName = _inputHotelName();
-		String reservationMonth = _inputReservationMonth();
-		int reservationStart = _inputReservationStart();
-		int reservationEnd = _inputReservationEnd(reservationStart);
-		Room room = _createRoom(roomType);
+	void createReservationInitialTypeRoom(String roomType) {
+	
+		String hotelName = inputs.inputHotelName();
+		String reservationMonth = inputs.inputReservationMonth();
+		int reservationStart = inputs.inputReservationStart();
+		int reservationEnd = inputs.inputReservationEnd(reservationStart);
+		Room room = createRoom(roomType);
 		
 		reservationInfos[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
 		Reservation.totalNumOfReservation++;
@@ -56,7 +146,7 @@ public class HotelMenu {
 		}
 	}
 	
-	private Room _createRoom(String roomType) {
+	Room createRoom(String roomType) {
 		if(roomType.equals("Single")) {
 			return new SingleRoom();
 		}
@@ -76,68 +166,18 @@ public class HotelMenu {
 			return new SuiteRoom();
 		}
 	}
-	
-	private int _checkReservationStart(int reservationStart) {
-		if(reservationStart <= 0 || reservationStart > 30) {
-			System.out.println("Invalid input. Please enter again.\n");
-  			reservationStart = _inputReservationStart();
-		}
-		return reservationStart;
-	}
-	
-	private int _checkReservationEnd(int reservationStart, int reservationEnd) {
-		if(reservationStart >= reservationEnd || reservationEnd > 30) {
-  			System.out.println("Invalid input. Please enter again.\n");
-  			reservationEnd = _inputReservationEnd(reservationStart);
-  		}
-		return reservationEnd;
-	}
 
-	private String _inputRoomType() {
-		System.out.println("Hotel Type: ");
-  		String roomType = ms.nextLine();
-  		
-  		if(!Arrays.asList(roomTypes).contains(roomType)) {
-  			System.out.println("Invalid input.\n");
-  			roomType = _inputRoomType();
-  		}
-  		return roomType;
-	}
+}
 
-	private String _inputHotelName() {
-		System.out.println("Hotel Name: ");
-		ms.nextLine(); //to fix error
-  		String hotelName = ms.nextLine();
-  		return hotelName;
+class Display{
+	
+	private Reservation [] reservationInfos;
+	
+	public Display (Reservation [] reservationInfos) {
+		this.reservationInfos = reservationInfos;
 	}
 	
-	private String _inputReservationMonth() {
-		System.out.println("Reservation Month: ");
-  		String reservationMonth = ms.nextLine();
-  		
-  		if(!Arrays.asList(months).contains(reservationMonth)) {
-  			System.out.println("Invalid input.\n");
-  			reservationMonth = _inputReservationMonth();
-  		}
-  		return reservationMonth;
-	}
-	
-	private int _inputReservationStart() {
-		System.out.println("Reservation Start: ");
-  		int reservationStart = ms.nextInt();
-  		reservationStart = _checkReservationStart(reservationStart);
-  		return reservationStart;
-	}
-	
-	private int _inputReservationEnd(int reservationStart) {
-		System.out.println("Reservation End: ");
-  		int reservationEnd = ms.nextInt();
-  		ms.nextLine(); //to fix error
-  		reservationEnd = _checkReservationEnd(reservationStart, reservationEnd);
-  		return reservationEnd;
-	}
-
-	private void _roomDisplay() {
+	void roomDisplay() {
 		if(reservationInfos[0] == null) {
   			System.out.println("No room has been created yet.\n");
 		}
@@ -148,7 +188,7 @@ public class HotelMenu {
 		}
 	}
 	
-	private void _displayRoomTypesInfo() {
+	void displayRoomTypesInfo() {
 		System.out.println(
 				"\nROOM INFOS:\n\n"
 				+ "Room Type: "+ SingleRoom.roomType +", Daily Cost: "+ SingleRoom.dailyCost +", Room Size: "+ SingleRoom.roomSize +", Has Bath: "+ SingleRoom.hasBath +"\n"
@@ -159,53 +199,105 @@ public class HotelMenu {
 				+ "Room Type: "+ SuiteRoom.roomType +", Daily Cost: "+ SuiteRoom.dailyCost +", Room Size: "+ SuiteRoom.roomSize +", Has Bath: "+ SuiteRoom.hasBath +"\n"
 				);
 	}
-	
-	public static void main(String[] args) {
+
+	void displayReservationByCity(String city) {
+		List<Reservation> listReservation = Arrays.asList(reservationInfos);
+		Iterator<Reservation> itr = listReservation.listIterator();
 		
-		HotelMenu hotelMenu = new HotelMenu();
-	  
-		while(true) {
-			String userInput = hotelMenu.menuScreen();
-			
-			switch(userInput) {
-			
-		  		case "1":
-		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
-		  				hotelMenu._createReservationInitialTypeRoom("Single");
-					}
-		  			else {		  				
-		  				System.out.println("There are no room left in the hotel.\n");
-		  			}
-			  		break;
-			  		
-		  		case "2":
-		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
-		  				hotelMenu._displayRoomTypesInfo();
-		  				hotelMenu._createReservation();
-					}
-		  			else {		  				
-		  				System.out.println("There are no room left in the hotel.\n");
-		  			}
-			  		break;
-			  	
-			  	case "3":
-			  		hotelMenu._roomDisplay();
-			  		break;
-		  	
-			  	case "4":
-			  		System.out.println(Reservation.getTotalNumOfReservation() + " reservations created so far.\n");
-			  		break;
-			  		
-			  	case "5":
-			  		System.out.println("Exit...");
-			  		System.exit(0);
-			  		break;
-			  	
-			  	default:
-			  		System.out.println("Please enter valid input!\n");
-			  		break;  		
+		String hotelName;
+		boolean check = false;
+
+		while(itr.hasNext()) {
+			hotelName = itr.next().getHotelName();
+			if(hotelName.contains(city)) {
+				check = true;
+				System.out.println(hotelName + "\n");
 			}
 		}
-    }
+		if(!check) {
+			System.out.println("There is not reservation in " + city + "\n");
+		}
+	}
+}
+
+
+class Inputs{
+	
+	private Scanner scanner;
+	private String roomTypes[] = {"Single", "Double", "Club", "Family", "Family with View", "Suite"};
+	private final String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	
+	
+	public Inputs(Scanner scanner) {
+		this.scanner = scanner;
+	}
+
+	String inputHotelName() {
+		System.out.println("Hotel Name: ");
+		scanner.nextLine(); //to fix error
+  		String hotelName = scanner.nextLine();
+  		return hotelName;
+	}
+	
+	String inputReservationMonth() {
+		System.out.println("Reservation Month: ");
+  		String reservationMonth = scanner.nextLine();
+  		
+  		if(!Arrays.asList(months).contains(reservationMonth)) {
+  			System.out.println("Invalid input.\n");
+  			reservationMonth = inputReservationMonth();
+  		}
+  		return reservationMonth;
+	}
+	
+	int inputReservationStart() {
+		System.out.println("Reservation Start: ");
+  		int reservationStart = scanner.nextInt();
+  		reservationStart = checkReservationStart(reservationStart);
+  		return reservationStart;
+	}
+	
+	int inputReservationEnd(int reservationStart) {
+		System.out.println("Reservation End: ");
+  		int reservationEnd = scanner.nextInt();
+  		scanner.nextLine(); //to fix error
+  		reservationEnd = checkReservationEnd(reservationStart, reservationEnd);
+  		return reservationEnd;
+	}
+	
+	String inputRoomType() {
+		System.out.println("Hotel Type: ");
+  		String roomType = scanner.nextLine();
+  		
+  		if(!Arrays.asList(roomTypes).contains(roomType)) {
+  			System.out.println("Invalid input.\n");
+  			roomType = inputRoomType();
+  		}
+  		return roomType;
+	}
+	
+	String inputCityName() {
+		System.out.println("Type a city name for a reservation search: ");
+		scanner.nextLine(); //to fix error
+		String cityName = scanner.nextLine();
+		return cityName;
+	}
+	
+	int checkReservationStart(int reservationStart) {
+		if(reservationStart <= 0 || reservationStart > 30) {
+			System.out.println("Invalid input. Please enter again.\n");
+  			reservationStart = inputReservationStart();
+		}
+		return reservationStart;
+	}
+	
+	int checkReservationEnd(int reservationStart, int reservationEnd) {
+		if(reservationStart >= reservationEnd || reservationEnd > 30) {
+  			System.out.println("Invalid input. Please enter again.\n");
+  			reservationEnd = inputReservationEnd(reservationStart);
+  		}
+		return reservationEnd;
+	}
+
 }
  
