@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -17,20 +18,36 @@ public class HotelMenu {
 		return userInput;
 	}
 	
-	private void removeReservationByCity() {
+	private Reservation[] removeReservationByCity() {
 		System.out.println("Type a city name for remove:");
 		String cityName = ms.next();
+		Reservation reservation;
 		String hotelName;
 		
-		List<Reservation> listReservation = Arrays.asList(reservationInfos);
-		Iterator<Reservation> itr = listReservation.listIterator();
+		List<Reservation> reservationList = new ArrayList<>(Arrays.asList(reservationInfos));
+		Iterator<Reservation> itr = reservationList.listIterator();
 		
 		while(itr.hasNext()) {
-			hotelName = itr.next().getHotelName();
+			reservation = itr.next();
+			hotelName = reservation.getHotelName();
 			if(hotelName.contains(cityName)) {
+				Reservation.totalNumOfReservation--;
 				itr.remove();
 			}
 		}
+		
+		Reservation [] a = reservationList.toArray(new Reservation[reservationList.size()]);
+		
+		
+		for(int i=0 ; i<3 ; i++) {
+			reservationInfos[i] = null;
+		}
+		
+		for(int i=0 ; i<a.length ; i++) {
+			System.out.println(a[i].getHotelName());
+		}
+		
+		return a;
 	}
 	
 	public static void main(String[] args) {
@@ -79,7 +96,7 @@ public class HotelMenu {
 			  		break;
 			  		
 			  	case "6":
-			  		hotelMenu.removeReservationByCity();
+			  		hotelMenu.reservationInfos = hotelMenu.removeReservationByCity();
 			  		break;
 			  		
 			  	case "7":
