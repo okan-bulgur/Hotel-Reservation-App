@@ -8,7 +8,7 @@ public class HotelMenu {
 	
 	private Scanner ms = new Scanner(System.in);
 	private final int ROOMNO = 3;  
-	private Reservation [] reservationInfos = new Reservation[ROOMNO];
+	private Reservation [] reservations = new Reservation[ROOMNO];
 	
 	private String menuScreen() {
 		for(MenuOption menuOption : MenuOption.values()) {
@@ -18,44 +18,39 @@ public class HotelMenu {
 		return userInput;
 	}
 	
-	private Reservation[] removeReservationByCity() {
+	private void removeReservationByCity() {
 		System.out.println("Type a city name for remove:");
 		String cityName = ms.next();
 		Reservation reservation;
 		String hotelName;
 		
-		List<Reservation> reservationList = new ArrayList<>(Arrays.asList(reservationInfos));
+		List<Reservation> reservationList = new ArrayList<>(Arrays.asList(reservations));
 		Iterator<Reservation> itr = reservationList.listIterator();
 		
 		while(itr.hasNext()) {
 			reservation = itr.next();
-			hotelName = reservation.getHotelName();
-			if(hotelName.contains(cityName)) {
-				Reservation.totalNumOfReservation--;
-				itr.remove();
+			if(reservation != null) {
+				hotelName = reservation.getHotelName();
+				if(hotelName.contains(cityName)) {
+					Reservation.totalNumOfReservation--;
+					itr.remove();
+				}	
 			}
+		}		
+		
+		for(int i=0 ; i<ROOMNO ; i++) {
+			reservations[i] = null;
 		}
 		
-		Reservation [] a = reservationList.toArray(new Reservation[reservationList.size()]);
-		
-		
-		for(int i=0 ; i<3 ; i++) {
-			reservationInfos[i] = null;
-		}
-		
-		for(int i=0 ; i<a.length ; i++) {
-			System.out.println(a[i].getHotelName());
-		}
-		
-		return a;
+		reservationList.toArray(reservations);
 	}
 	
 	public static void main(String[] args) {
 		
 		HotelMenu hotelMenu = new HotelMenu();
 		
-		Create create = new Create(hotelMenu.reservationInfos, hotelMenu.ms);
-		Display display = new Display(hotelMenu.reservationInfos);
+		Create create = new Create(hotelMenu.ms);
+		Display display = new Display();
 		Inputs inputs = new Inputs(hotelMenu.ms);
 	  
 		while(true) {
@@ -65,7 +60,7 @@ public class HotelMenu {
 			
 		  		case "1":
 		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
-		  				create.createReservationInitialTypeRoom("Single");
+		  				create.createReservationInitialTypeRoom(hotelMenu.reservations ,"Single");
 					}
 		  			else {		  				
 		  				System.out.println("There are no room left in the hotel.\n");
@@ -75,7 +70,7 @@ public class HotelMenu {
 		  		case "2":
 		  			if(Reservation.getTotalNumOfReservation() < hotelMenu.ROOMNO) {
 		  				display.displayRoomTypesInfo();
-		  				create.createReservation();
+		  				create.createReservation(hotelMenu.reservations);
 					}
 		  			else {		  				
 		  				System.out.println("There are no room left in the hotel.\n");
@@ -83,7 +78,7 @@ public class HotelMenu {
 			  		break;
 			  	
 			  	case "3":
-			  		display.roomDisplay();
+			  		display.roomDisplay(hotelMenu.reservations);
 			  		break;
 		  	
 			  	case "4":
@@ -92,11 +87,11 @@ public class HotelMenu {
 			  		
 			  	case "5":
 			  		String cityName = inputs.inputCityName();
-			  		display.displayReservationByCity(cityName);
+			  		display.displayReservationByCity(hotelMenu.reservations, cityName);
 			  		break;
 			  		
 			  	case "6":
-			  		hotelMenu.reservationInfos = hotelMenu.removeReservationByCity();
+			  		hotelMenu.removeReservationByCity();
 			  		break;
 			  		
 			  	case "7":
@@ -114,17 +109,15 @@ public class HotelMenu {
 
 class Create{
 	
-	private Reservation [] reservationInfos;
 	private Scanner scanner;
 	private Inputs inputs;
 	
-	public Create(Reservation [] reservationInfos, Scanner scanner) {
-		this.reservationInfos = reservationInfos;
+	public Create(Scanner scanner) {
 		this.scanner = scanner;
 		inputs = new Inputs(this.scanner);
 	}
 	
-	void createReservation() {
+	void createReservation(Reservation reservations[]) {
 		
 		String hotelName = inputs.inputHotelName();
 		String roomType = inputs.inputRoomType();
@@ -133,10 +126,10 @@ class Create{
 		int reservationEnd = inputs.inputReservationEnd(reservationStart);	
 		Room room = createRoom(roomType);
 		
-		reservationInfos[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
+		reservations[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
 		Reservation.totalNumOfReservation++;
 		
-  		if(reservationInfos[Reservation.getTotalNumOfReservation()-1] != null) {
+  		if(reservations[Reservation.getTotalNumOfReservation()-1] != null) {
   			System.out.println("Reservation created!\n");
   		}
   		else {
@@ -144,7 +137,7 @@ class Create{
 		}
 	}
 	
-	void createReservationInitialTypeRoom(String roomType) {
+	void createReservationInitialTypeRoom(Reservation reservations[], String roomType) {
 	
 		String hotelName = inputs.inputHotelName();
 		String reservationMonth = inputs.inputReservationMonth();
@@ -152,10 +145,10 @@ class Create{
 		int reservationEnd = inputs.inputReservationEnd(reservationStart);
 		Room room = createRoom(roomType);
 		
-		reservationInfos[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
+		reservations[Reservation.getTotalNumOfReservation()] = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room);
 		Reservation.totalNumOfReservation++;
 		
-  		if(reservationInfos[Reservation.getTotalNumOfReservation()-1] != null) {
+  		if(reservations[Reservation.getTotalNumOfReservation()-1] != null) {
   			System.out.println("Reservation created!\n");
   		}
   		else {
@@ -188,19 +181,13 @@ class Create{
 
 class Display{
 	
-	private Reservation [] reservationInfos;
-	
-	public Display (Reservation [] reservationInfos) {
-		this.reservationInfos = reservationInfos;
-	}
-	
-	void roomDisplay() {
-		if(reservationInfos[0] == null) {
+	void roomDisplay(Reservation reservations[]) {
+		if(reservations[0] == null) {
   			System.out.println("No room has been created yet.\n");
 		}
 		else {
-			for(int reservation = 0; reservation < reservationInfos.length && reservationInfos[reservation] != null; reservation++) {
-	  			reservationInfos[reservation].displayInfo();
+			for(int reservation = 0; reservation < reservations.length && reservations[reservation] != null; reservation++) {
+				reservations[reservation].displayInfo();
 	  		}
 		}
 	}
@@ -217,18 +204,22 @@ class Display{
 				);
 	}
 
-	void displayReservationByCity(String city) {
-		List<Reservation> listReservation = Arrays.asList(reservationInfos);
+	void displayReservationByCity(Reservation reservations[], String city) {
+		List<Reservation> listReservation = Arrays.asList(reservations);
 		Iterator<Reservation> itr = listReservation.listIterator();
 		
+		Reservation reservation;
 		String hotelName;
 		boolean check = false;
 
 		while(itr.hasNext()) {
-			hotelName = itr.next().getHotelName();
-			if(hotelName.contains(city)) {
-				check = true;
-				System.out.println(hotelName + "\n");
+			reservation = itr.next();
+			if(reservation != null) {
+				hotelName = reservation.getHotelName();
+				if(hotelName.contains(city)) {
+					check = true;
+					System.out.println(hotelName + "\n");
+				}
 			}
 		}
 		if(!check) {
