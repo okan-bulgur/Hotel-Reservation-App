@@ -1,12 +1,15 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class HotelMenu {
 	
 	private static ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 	private static ArrayList<Services> services = new ArrayList<Services>();
+	private static Map<Integer, Double> totalCostByID = new HashMap<Integer, Double>();
 	
 	public static void main(String[] args) {
 		Scanner ms = new Scanner(System.in);			
@@ -23,7 +26,7 @@ public class HotelMenu {
 			
 		  		case "1":
 		  				display.displayRoomTypesInfo();
-		  				create.createReservation(reservations, services);
+		  				create.createReservation(reservations, services, totalCostByID);
 			  		break;
 			  	
 			  	case "2":
@@ -40,7 +43,7 @@ public class HotelMenu {
 						System.out.println("There is not any reservation. Service cannot be used.");
 						break;
 					}
-			  		Services service = create.createService(reservations.size());
+			  		Services service = create.createService(reservations.size(), totalCostByID);
 			  		if(service != null) {
 			  			services.add(service);
 			  		}
@@ -51,7 +54,11 @@ public class HotelMenu {
 			  		break;
 
 			  	case "6":
-			  		System.out.println("6. Display the total cost of every customer");
+			  		if(services.size() == 0) {
+			  			System.out.println("There is not any services.");
+			  			break;
+			  		}
+			  		display.displayServicesByCustomer(totalCostByID);
 			  		break;
 			  		
 			  	case "7":
@@ -77,7 +84,7 @@ class Create{
 		inputs = new Inputs(this.scanner);
 	}
 	
-	void createReservation(ArrayList<Reservation> reservations, ArrayList<Services> services) {
+	void createReservation(ArrayList<Reservation> reservations, ArrayList<Services> services, Map<Integer, Double> totalCostByID) {
 		
 		String hotelName = inputs.inputHotelName();
 		String roomType = inputs.inputRoomType();
@@ -89,11 +96,13 @@ class Create{
 		
 		reservations.add((Reservation)reservation);
 		services.add(reservation);
-		
+
 		Reservation.totalNumOfReservation++;
 		
+		totalCostByID.put(Reservation.totalNumOfReservation, reservation.calculateService());
+		
   		if(reservations.get(reservations.size()-1) != null) {
-  			System.out.println("Reservation created!\n");
+  			System.out.println("Reservation ID: " + Reservation.totalNumOfReservation + " is created\n");
   		}
   		else {
   			System.out.println("Reservation not created!\n");
@@ -121,7 +130,7 @@ class Create{
 		}
 	}
 
-	Services createService(int totalNumberOfReservation) {
+	Services createService(int totalNumberOfReservation, Map<Integer, Double> totalCostByID) {
 		System.out.println("Please select one of the extra services from below:");
 		System.out.println("1. Laundry Service \n2. Spa Service");
   		int servicesNo = scanner.nextInt();
@@ -131,11 +140,11 @@ class Create{
   		switch (servicesNo) {
   		
 			case 1:
-				service = createLaundry(totalNumberOfReservation);
+				service = createLaundry(totalNumberOfReservation, totalCostByID);
 				break;
 				
 			case 2:
-				service = createSpa(totalNumberOfReservation);
+				service = createSpa(totalNumberOfReservation, totalCostByID);
 				break;
 				
 			default:
@@ -145,7 +154,7 @@ class Create{
   		return service;
 	}
 
-	Services createLaundry(int totalNumberOfReservation) {
+	Services createLaundry(int totalNumberOfReservation, Map<Integer, Double> totalCostByID) {
 		System.out.println("Type the reservation ID to credit this service:");
   		int CustomerID = scanner.nextInt();
   		
@@ -156,10 +165,12 @@ class Create{
   		
 		System.out.println("How many pieces of clothing?");
 		int piecesOfClothing = scanner.nextInt();
-		return new Laundry(CustomerID, piecesOfClothing);
+		Services laundry =  new Laundry(CustomerID, piecesOfClothing);
+		totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + laundry.calculateService());
+		return laundry;
 	}
 	
-	Services createSpa(int totalNumberOfReservation) {
+	Services createSpa(int totalNumberOfReservation, Map<Integer, Double> totalCostByID) {
 		System.out.println("Type the reservation ID to credit this service:");
   		int CustomerID = scanner.nextInt();
   		
@@ -170,7 +181,9 @@ class Create{
   		
 		System.out.println("How many days?");
 		int days = scanner.nextInt();
-		return new Spa(CustomerID, days);
+		Spa spa = new Spa(CustomerID, days);
+		totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + spa.calculateService());
+		return spa;
 	}
 }
 
@@ -231,6 +244,13 @@ class Display{
   			Services ser = itr.next();
   			System.out.println(ser);
   		}
+	}
+
+	void displayServicesByCustomer( Map<Integer, Double> totalCostByID) {
+		for(Integer ID : totalCostByID.keySet()) {
+			double totalCost = totalCostByID.get(ID);
+			System.out.println("The cost for the Room booking service of reservation ID " + ID + ": " + totalCost);
+		}
 	}
 }
 

@@ -2,7 +2,7 @@ public abstract class Services {
 	protected int CustomerID;
 	
 	public Services() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public int getCustomerID() {
