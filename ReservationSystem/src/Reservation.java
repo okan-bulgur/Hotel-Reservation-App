@@ -1,4 +1,4 @@
-public class Reservation {
+public class Reservation extends Services{
 	
 	private String _hotelName;
 	private String _reservationMonth;
@@ -6,6 +6,7 @@ public class Reservation {
 	private int _reservationEnd;
 	private Room _room;
 	private int _dailyCost;
+	private double _totalCost;
 	
 	public static int totalNumOfReservation = 0;
 	
@@ -17,6 +18,8 @@ public class Reservation {
 		setReservationEnd(reservationEnd);
 		setRoom(room);
 		setDailyCost();
+		calculateTotalPrice();
+		setCustomerID(totalNumOfReservation + 1);
 	}
 	
 	public void setHotelName(String hotelName) {
@@ -41,6 +44,10 @@ public class Reservation {
 	
 	public void setDailyCost() {
 		this._dailyCost = getRoom().getDailyCost();
+	}
+	
+	public void setTotalCost(int totalCost) {
+		this._totalCost = totalCost;
 	}
 	
 	public String getHotelName() {
@@ -71,7 +78,11 @@ public class Reservation {
 		return totalNumOfReservation;
 	}
 	
-	private int calculateTotalPrice() {
+	public double getTotalCost() {
+		return this._totalCost;
+	}
+	
+	private void calculateTotalPrice() {
 		String month = getReservationMonth();
 		int totalDay = getReservationEnd() - getReservationStart();
 		int totalCost = getDailyCost() * totalDay;
@@ -80,19 +91,33 @@ public class Reservation {
 			case "June":
 			case "July":
 			case "August":
-				return 2*totalCost;
-		default:
-				return totalCost;
+				setTotalCost(totalCost*2);
+				break;
+			default:
+				setTotalCost(totalCost);
+				break;
 		}
 	}
 	
 	public void displayInfo() {
 		System.out.println("Reservation for a "+ getRoom().getRoomType() +" room in "+ getHotelName() +" starts on "+ getReservationMonth() +" "+ getReservationStart() +" and ends on "+ getReservationMonth() +" "+ getReservationEnd() +".");
-		System.out.println("Reservation has a total cost of $"+ calculateTotalPrice() +"\n");
+		System.out.println("Reservation has a total cost of $"+ getTotalCost() +"\n");
 	}
 	
 	public void displayTotalNumberOfReservation() {
 		System.out.println(totalNumOfReservation + "reservation created so far.\n");
 	}
 
+	
+	@Override
+	protected String getServiceType() {
+		return "Room Booking";
+	}
+
+	@Override
+	protected Double calculateService() {
+		return getTotalCost();
+	}
+
+	
 }

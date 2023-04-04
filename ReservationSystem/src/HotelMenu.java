@@ -5,16 +5,15 @@ import java.util.Iterator;
 
 public class HotelMenu {
 	
-	private Scanner ms = new Scanner(System.in);	
 	private static ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+	private static ArrayList<Services> services = new ArrayList<Services>();
 	
 	public static void main(String[] args) {
+		Scanner ms = new Scanner(System.in);			
 		
-		HotelMenu hotelMenu = new HotelMenu();
-		
-		ArrangingRoom arrangingRoom = new ArrangingRoom(hotelMenu.ms);
+		Create create = new Create(ms);
 		Display display = new Display();
-		Inputs inputs = new Inputs(hotelMenu.ms);
+		Inputs inputs = new Inputs(ms);
 	  
 		while(true) {
 			String userInput = inputs.menuScreen();
@@ -24,7 +23,7 @@ public class HotelMenu {
 			
 		  		case "1":
 		  				display.displayRoomTypesInfo();
-		  				arrangingRoom.createReservation(reservations);
+		  				create.createReservation(reservations, services);
 			  		break;
 			  	
 			  	case "2":
@@ -37,11 +36,18 @@ public class HotelMenu {
 			  		break;
 			  		
 			  	case "4":
-			  		System.out.println("4. Add extra services to a reservation");
+			  		if(reservations.size() == 0) {
+						System.out.println("There is not any reservation. Service cannot be used.");
+						break;
+					}
+			  		Services service = create.createService(reservations.size());
+			  		if(service != null) {
+			  			services.add(service);
+			  		}
 			  		break;
 			  		
 			  	case "5":
-			  		System.out.println("5. Calculate total cost for each service");
+			  		display.displayServices(services);
 			  		break;
 
 			  	case "6":
@@ -61,26 +67,29 @@ public class HotelMenu {
     }
 }
 
-class ArrangingRoom{
+class Create{
 	
 	private Scanner scanner;
 	private Inputs inputs;
 	
-	public ArrangingRoom(Scanner scanner) {
+	public Create(Scanner scanner) {
 		this.scanner = scanner;
 		inputs = new Inputs(this.scanner);
 	}
 	
-	void createReservation(ArrayList<Reservation> reservations) {
+	void createReservation(ArrayList<Reservation> reservations, ArrayList<Services> services) {
 		
 		String hotelName = inputs.inputHotelName();
 		String roomType = inputs.inputRoomType();
 		String reservationMonth = inputs.inputReservationMonth();
 		int reservationStart = inputs.inputReservationStart();
 		int reservationEnd = inputs.inputReservationEnd(reservationStart);	
-		Room room = createRoom(roomType);
+		Room room = createRoom(roomType);	
+		Services reservation = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room); 
 		
-		reservations.add(new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room));
+		reservations.add((Reservation)reservation);
+		services.add(reservation);
+		
 		Reservation.totalNumOfReservation++;
 		
   		if(reservations.get(reservations.size()-1) != null) {
@@ -110,6 +119,58 @@ class ArrangingRoom{
 		else{
 			return new SuiteRoom();
 		}
+	}
+
+	Services createService(int totalNumberOfReservation) {
+		System.out.println("Please select one of the extra services from below:");
+		System.out.println("1. Laundry Service \n2. Spa Service");
+  		int servicesNo = scanner.nextInt();
+  		
+  		Services service = null;
+  		
+  		switch (servicesNo) {
+  		
+			case 1:
+				service = createLaundry(totalNumberOfReservation);
+				break;
+				
+			case 2:
+				service = createSpa(totalNumberOfReservation);
+				break;
+				
+			default:
+				System.out.println("Enter a valid input.");
+				break;
+		}
+  		return service;
+	}
+
+	Services createLaundry(int totalNumberOfReservation) {
+		System.out.println("Type the reservation ID to credit this service:");
+  		int CustomerID = scanner.nextInt();
+  		
+  		if(totalNumberOfReservation < CustomerID) {
+  			System.out.println("Invalid customer ID.");
+  			return null;
+		}
+  		
+		System.out.println("How many pieces of clothing?");
+		int piecesOfClothing = scanner.nextInt();
+		return new Laundry(CustomerID, piecesOfClothing);
+	}
+	
+	Services createSpa(int totalNumberOfReservation) {
+		System.out.println("Type the reservation ID to credit this service:");
+  		int CustomerID = scanner.nextInt();
+  		
+  		if(totalNumberOfReservation < CustomerID) {
+  			System.out.println("Invalid customer ID.");
+  			return null;
+		}
+  		
+		System.out.println("How many days?");
+		int days = scanner.nextInt();
+		return new Spa(CustomerID, days);
 	}
 }
 
@@ -158,6 +219,18 @@ class Display{
 		if(!check) {
 			System.out.println("There is not reservation in " + city + "\n");
 		}
+	}
+
+	void displayServices(ArrayList<Services> services) {
+		if(services.size() == 0) {
+  			System.out.println("There is not service.");
+  			return;
+  		}
+  		Iterator<Services> itr = services.listIterator();
+  		while(itr.hasNext()) {
+  			Services ser = itr.next();
+  			System.out.println(ser);
+  		}
 	}
 }
 
