@@ -1,10 +1,10 @@
 public enum MenuOption {
-	OPTION1("1. Create new Reservation\n"),
-	OPTION2("2. Create new Reservation with Room Type\n"),
-	OPTION3("3. Display all Reservations\n"),
-	OPTION4("4. Display the total number of reservations\n"),
-	OPTION5("5. List the reservations for a specific city\n"),
-	OPTION6("6. Remove reservations in a specific city\n"),
+	OPTION1("1. Create new Reservation with Room Type\n"),
+	OPTION2("2. Display all Reservations\n"),
+	OPTION3("3. List the reservations for a specific city\n"),
+	OPTION4("4. Add extra services to a reservation\n"),
+	OPTION5("5. Calculate total cost for each service\n"),
+	OPTION6("6. Display the total cost of every customer\n"),
 	OPTION7("7. Exit");
 	
 	private String _option;

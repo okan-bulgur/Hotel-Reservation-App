@@ -18,35 +18,34 @@ public class HotelMenu {
 	  
 		while(true) {
 			String userInput = inputs.menuScreen();
+			System.out.println();
 			
 			switch(userInput) {
-		
+			
 		  		case "1":
-		  			if(Reservation.getTotalNumOfReservation() < reservations.size()) {
 		  				display.displayRoomTypesInfo();
 		  				arrangingRoom.createReservation(reservations);
-					}
-		  			else {		  				
-		  				System.out.println("There are no room left in the hotel.\n");
-		  			}
 			  		break;
 			  	
 			  	case "2":
 			  		display.roomDisplay(reservations);
 			  		break;
-		  	
-			  	case "4":
-			  		System.out.println(Reservation.getTotalNumOfReservation() + " reservations created so far.\n");
-			  		break;
 			  		
-			  	case "5":
+			  	case "3":
 			  		String cityName = inputs.inputCityName();
 			  		display.displayReservationByCity(reservations, cityName);
 			  		break;
 			  		
+			  	case "4":
+			  		System.out.println("4. Add extra services to a reservation");
+			  		break;
+			  		
+			  	case "5":
+			  		System.out.println("5. Calculate total cost for each service");
+			  		break;
+
 			  	case "6":
-			  		String cityName1 = inputs.inputCityName();
-			  		reservations = arrangingRoom.removeReservationByCity(reservations, cityName1);
+			  		System.out.println("6. Display the total cost of every customer");
 			  		break;
 			  		
 			  	case "7":
@@ -112,32 +111,12 @@ class ArrangingRoom{
 			return new SuiteRoom();
 		}
 	}
-	
-	ArrayList<Reservation> removeReservationByCity(ArrayList<Reservation> reservations, String cityName) {
-		Reservation reservation;
-		String hotelName;
-
-		Iterator<Reservation> itr = reservations.listIterator();
-		
-		while(itr.hasNext()) {
-			reservation = itr.next();
-			if(reservation != null) {
-				hotelName = reservation.getHotelName();
-				if(hotelName.contains(cityName)) {
-					Reservation.totalNumOfReservation--;
-					itr.remove();
-				}	
-			}
-		}			
-		return reservations;
-	}
-
 }
 
 class Display{
 	
 	void roomDisplay(ArrayList<Reservation> reservations) {
-		if(reservations.get(0) == null) {
+		if(reservations.size() == 0) {
   			System.out.println("No room has been created yet.\n");
 		}
 		else {
@@ -172,7 +151,7 @@ class Display{
 				hotelName = reservation.getHotelName();
 				if(hotelName.contains(city)) {
 					check = true;
-					System.out.println(hotelName + "\n");
+					System.out.println(hotelName);
 				}
 			}
 		}
@@ -195,6 +174,7 @@ class Inputs{
 	}
 
 	String menuScreen() {
+		System.out.println();
 		for(MenuOption menuOption : MenuOption.values()) {
 			System.out.printf(menuOption.getOption());
 		}
