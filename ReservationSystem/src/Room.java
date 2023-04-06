@@ -5,8 +5,11 @@ public class Room{
 	protected int _roomSize;
 	protected boolean _hasBath;
 
-	public Room(){
-		
+	public Room(String roomType, int dailyCost, int roomSize, boolean hasBath){
+		setRoomType(roomType);
+		setDailyCost(dailyCost);
+		setRoomSize(roomSize);
+		setHasBath(hasBath);
 	}
 
 	public String getRoomType() {
