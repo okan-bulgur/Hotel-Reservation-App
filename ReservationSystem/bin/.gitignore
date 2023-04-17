@@ -1,5 +1,4 @@
-/Service.class
-/Services.class
-/Spa.class
-/Laundry.class
-/Create.class
+/ServiceFunctions.class
+/ServiceFunctions$Create.class
+/ServiceFunctions$Display.class
+/ServiceFunctions$Inputs.class
