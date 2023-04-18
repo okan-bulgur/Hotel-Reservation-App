@@ -5,6 +5,8 @@ public class Employees implements Calculable{
 	int id;
 	double monthlyPayment;
 	
+	static double totalMonthlyPayments = 0;
+	
 	public Employees(String name, String surname, int id, double monthlyPayment){
 		setName(name);
 		setSurname(surname);
@@ -34,11 +36,12 @@ public class Employees implements Calculable{
 		return monthlyPayment;
 	}
 	public void setMonthlyPayment(double monthlyPayment) {
+		totalMonthlyPayments += monthlyPayment;
 		this.monthlyPayment = monthlyPayment;
 	}
 
 	public double getCost() {
-		return getMonthlyPayment();
+		return totalMonthlyPayments;
 	}
 	
 	@Override

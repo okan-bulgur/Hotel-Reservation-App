@@ -137,10 +137,31 @@ public class ServiceFunctions {
 			totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + spa.getCost());
 			return spa;
 		}
+	
+		double inComeStatements(String month) {
+			double inCome = 0;
+			
+			Set<Integer> ID = services.keySet();
+			if(services.size() == 0) {
+				return inCome;
+			}
+			for(Integer id : ID) {
+				ArrayList<Services> servicesByID = services.get(id);
+				
+				Reservation reservation = (Reservation)servicesByID.get(0);
+				if(reservation.getReservationMonth().equals(month)) {
+					for(Services service : servicesByID) {
+						System.out.println("For reservation ID: "+ id +", Service type: " + service.getServiceType() + ", Service Cost: " + service.getCost());
+						inCome += service.getCost();
+					}
+				}
+			}
+			return inCome;
+		}
 	}
 
-	class Display{
-		
+	class Display{		
+	
 		void roomDisplay() {
 			if(reservations.size() == 0) {
 	  			System.out.println("No room has been created yet.\n");
@@ -203,7 +224,7 @@ public class ServiceFunctions {
 			}
 		}
 
-		void displayServicesByCustomer() {
+		void displayTotalCostByCustomer() {
 			if(services.size() == 0) {
 	  			System.out.println("There is not any services.");
 	  			return;
@@ -211,7 +232,7 @@ public class ServiceFunctions {
 			
 			for(Integer ID : totalCostByID.keySet()) {
 				double totalCost = totalCostByID.get(ID);
-				System.out.println("The cost for the Room booking service of reservation ID " + ID + ": " + totalCost);
+				System.out.println("The total cost of all services of the reservation with ID: "+ ID + " is " + totalCost);
 			}
 		}
 		
@@ -222,6 +243,7 @@ public class ServiceFunctions {
 		int displayServicesSize() {
 			return services.size();
 		}
+
 	}
 
 	class Inputs{
@@ -304,5 +326,18 @@ public class ServiceFunctions {
 	  		}
 			return reservationEnd;
 		}
+	
+		String inputMonth() {
+			System.out.println("Enter Month: ");
+			scanner.nextLine(); //to fix error
+	  		String month = scanner.nextLine();
+	  		
+	  		if(!Arrays.asList(months).contains(month)) {
+	  			System.out.println("Invalid input.\n");
+	  			month = inputReservationMonth();
+	  		}
+	  		return month;
+		}
 	}
+
 }

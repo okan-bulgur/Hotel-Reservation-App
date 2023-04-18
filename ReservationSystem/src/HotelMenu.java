@@ -45,7 +45,7 @@ public class HotelMenu {
 			  		break;
 
 			  	case "6":
-			  		serviceDisplay.displayServicesByCustomer();
+			  		serviceDisplay.displayTotalCostByCustomer();
 			  		break;
 			  	
 			  	case "7":
@@ -57,7 +57,20 @@ public class HotelMenu {
 			  		break;
 			  		
 			  	case "9":
-			  		//get monthly balance
+			  		String month = serviceInputs.inputMonth();
+			  		double inCome = serviceCreate.inComeStatements(month);
+			  		double billsCost = 0;
+			  		double employeeCost = Employees.totalMonthlyPayments;
+			  		for(Calculable calculable : calculables) {
+			  			if(calculable instanceof Bills && ((Bills) calculable).getMonth().equals(month)) {
+			  				billsCost += calculable.getCost();
+			  			}
+			  		}
+			  		double balance = inCome-billsCost-employeeCost;
+			  		System.out.println("Total monthly income: " + inCome);
+			  		System.out.println("Total monthly bills due: " + billsCost);
+			  		System.out.println("Total monthly employee cost: " + employeeCost);
+			  		System.out.println("TEnd of month balance: " + balance);
 			  		break;
 			  		
 			  	case "10":

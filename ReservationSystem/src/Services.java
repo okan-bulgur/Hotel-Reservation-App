@@ -19,6 +19,4 @@ public abstract class Services implements Calculable{
 	public String toString() {
 		return String.format("The cost for the %s service of reservation ID %d: %.2f", getServiceType(), getCustomerID(), getCost());
 	}
-	
-	
 }
