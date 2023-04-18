@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ServiceFunctions {
 	
-	private static ArrayList<Services> services = new ArrayList<Services>();
+	private static Map<Integer, ArrayList<Services>> services = new HashMap<Integer, ArrayList<Services>>();
 	private static ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 	private static Map<Integer, Double> totalCostByID = new HashMap<Integer, Double>();
 	private ArrayList<Calculable> calculables;
@@ -32,9 +33,12 @@ public class ServiceFunctions {
 			Services reservation = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room); 
 			
 			reservations.add((Reservation)reservation);
-			services.add(reservation);
 			calculables.add(reservation);
-
+			
+			ArrayList<Services> servicesByID = new ArrayList<Services>();
+			servicesByID.add(reservation);
+			services.put(reservation.getCustomerID(), servicesByID);
+			
 			Reservation.totalNumOfReservation++;
 			
 			totalCostByID.put(Reservation.totalNumOfReservation, reservation.getCost());
@@ -94,8 +98,10 @@ public class ServiceFunctions {
 					System.out.println("Enter a valid input.");
 					break;
 			}
-	  		if(service != null) {	  			
-	  			services.add(service);
+	  		if(service != null) {	  	
+	  			ArrayList<Services> servicesByID = services.get(service.getCustomerID());
+	  			servicesByID.add(service);
+	  			services.put(service.getCustomerID(), servicesByID);
 	  			calculables.add(service);
 	  		}
 		}
@@ -185,11 +191,16 @@ public class ServiceFunctions {
 	  			System.out.println("There is not service.");
 	  			return;
 	  		}
-	  		Iterator<Services> itr = services.listIterator();
-	  		while(itr.hasNext()) {
-	  			Services ser = itr.next();
-	  			System.out.println(ser);
-	  		}
+			Set<Integer> ID = services.keySet();
+			for(Integer id : ID) {
+				ArrayList<Services> servicesByID = services.get(id);
+				
+				Iterator<Services> itr = servicesByID.listIterator();
+				while(itr.hasNext()) {
+					Services ser = itr.next();
+					System.out.println(ser);
+				}
+			}
 		}
 
 		void displayServicesByCustomer() {
@@ -293,6 +304,5 @@ public class ServiceFunctions {
 	  		}
 			return reservationEnd;
 		}
-
 	}
 }
