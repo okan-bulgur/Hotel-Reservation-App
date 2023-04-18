@@ -2,14 +2,14 @@ public class Employees implements Calculable{
 	
 	String name;
 	String surname;
-	double monthlyPayment;
 	int id;
+	double monthlyPayment;
 	
-	public Employees(String name, String surname, double monthlyPayment, int id){
+	public Employees(String name, String surname, int id, double monthlyPayment){
 		setName(name);
 		setSurname(surname);
-		setMonthlyPayment(monthlyPayment);
 		setId(id);
+		setMonthlyPayment(monthlyPayment);
 	}
 	
 	public String getName() {
@@ -24,20 +24,19 @@ public class Employees implements Calculable{
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public double getMonthlyPayment() {
-		return monthlyPayment;
-	}
-	public void setMonthlyPayment(double monthlyPayment) {
-		this.monthlyPayment = monthlyPayment;
-	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+	public double getMonthlyPayment() {
+		return monthlyPayment;
+	}
+	public void setMonthlyPayment(double monthlyPayment) {
+		this.monthlyPayment = monthlyPayment;
+	}
 
-	
 	public double getCost() {
 		return getMonthlyPayment();
 	}

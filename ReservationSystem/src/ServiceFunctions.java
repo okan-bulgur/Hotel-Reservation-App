@@ -12,28 +12,23 @@ public class ServiceFunctions {
 	private static Map<Integer, Double> totalCostByID = new HashMap<Integer, Double>();
 	private ArrayList<Calculable> calculables;
 	
+	Scanner scanner = new Scanner(System.in);	
+	
 	public ServiceFunctions(ArrayList <Calculable> calculables) {
 		this.calculables = calculables;
 	}
 	
-	class Create{
-		
-		private Scanner scanner;
-		private Inputs inputs;
-		
-		public Create(Scanner scanner) {
-			this.scanner = scanner;
-			inputs = new Inputs(this.scanner);
-		}
+	class Create{	
+		Inputs inputs = new Inputs();
 		
 		void createReservation() {
-			
 			String hotelName = inputs.inputHotelName();
 			String roomType = inputs.inputRoomType();
 			String reservationMonth = inputs.inputReservationMonth();
 			int reservationStart = inputs.inputReservationStart();
 			int reservationEnd = inputs.inputReservationEnd(reservationStart);	
 			Room room = createRoom(roomType);	
+			
 			Services reservation = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room); 
 			
 			reservations.add((Reservation)reservation);
@@ -220,14 +215,8 @@ public class ServiceFunctions {
 
 	class Inputs{
 		
-		private Scanner scanner;
 		private String roomTypes[] = {"Single", "Double", "Club", "Family", "Family with View", "Suite"};
 		private final String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-		
-		
-		public Inputs(Scanner scanner) {
-			this.scanner = scanner;
-		}
 
 		String menuScreen() {
 			System.out.println();

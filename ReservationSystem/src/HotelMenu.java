@@ -1,18 +1,21 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class HotelMenu {
 	
 	private static ArrayList<Calculable> calculables = new ArrayList<Calculable>();
 	
 	public static void main(String[] args) {
-		Scanner ms = new Scanner(System.in);			
-		
 		ServiceFunctions serviceFunctions = new ServiceFunctions(calculables);
-		ServiceFunctions.Create serviceCreate = serviceFunctions.new Create(ms);
+		ServiceFunctions.Create serviceCreate = serviceFunctions.new Create();
 		ServiceFunctions.Display serviceDisplay = serviceFunctions.new Display();
-		ServiceFunctions.Inputs serviceInputs = serviceFunctions.new Inputs(ms);
-	  
+		ServiceFunctions.Inputs serviceInputs = serviceFunctions.new Inputs();
+		
+		EmployeeFunctions employeeFunctions = new EmployeeFunctions(calculables);
+		EmployeeFunctions.Create employeeCreate = employeeFunctions.new Create();
+		
+		BillFunctions billFunctions = new BillFunctions(calculables);
+		BillFunctions.Create billCreate = billFunctions.new Create();
+		
 		while(true) {
 			String userInput = serviceInputs.menuScreen();
 			System.out.println();
@@ -46,11 +49,11 @@ public class HotelMenu {
 			  		break;
 			  	
 			  	case "7":
-			  		//add an employee
+			  		employeeCreate.createEmployee();
 			  		break;
 			  	
 			  	case "8":
-			  		//add a bill
+			  		billCreate.createBill();
 			  		break;
 			  		
 			  	case "9":
