@@ -10,6 +10,11 @@ public class ServiceFunctions {
 	private static ArrayList<Services> services = new ArrayList<Services>();
 	private static ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 	private static Map<Integer, Double> totalCostByID = new HashMap<Integer, Double>();
+	private ArrayList<Calculable> calculables;
+	
+	public ServiceFunctions(ArrayList <Calculable> calculables) {
+		this.calculables = calculables;
+	}
 	
 	class Create{
 		
@@ -33,10 +38,11 @@ public class ServiceFunctions {
 			
 			reservations.add((Reservation)reservation);
 			services.add(reservation);
+			calculables.add(reservation);
 
 			Reservation.totalNumOfReservation++;
 			
-			totalCostByID.put(Reservation.totalNumOfReservation, reservation.calculateService());
+			totalCostByID.put(Reservation.totalNumOfReservation, reservation.getCost());
 			
 	  		if(reservations.get(reservations.size()-1) != null) {
 	  			System.out.println("Reservation ID: " + Reservation.totalNumOfReservation + " is created\n");
@@ -95,6 +101,7 @@ public class ServiceFunctions {
 			}
 	  		if(service != null) {	  			
 	  			services.add(service);
+	  			calculables.add(service);
 	  		}
 		}
 
@@ -110,7 +117,7 @@ public class ServiceFunctions {
 			System.out.println("How many pieces of clothing?");
 			int piecesOfClothing = scanner.nextInt();
 			Services laundry =  new Laundry(CustomerID, piecesOfClothing);
-			totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + laundry.calculateService());
+			totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + laundry.getCost());
 			return laundry;
 		}
 		
@@ -126,7 +133,7 @@ public class ServiceFunctions {
 			System.out.println("How many days?");
 			int days = scanner.nextInt();
 			Spa spa = new Spa(CustomerID, days);
-			totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + spa.calculateService());
+			totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + spa.getCost());
 			return spa;
 		}
 	}

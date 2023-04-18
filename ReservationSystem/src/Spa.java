@@ -31,7 +31,7 @@ public class Spa extends Services{
 	}
 
 	@Override
-	protected Double calculateService() {
+	public double getCost()  {
 		return price * getDays();
 	}
 	

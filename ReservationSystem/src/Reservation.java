@@ -107,7 +107,6 @@ public class Reservation extends Services{
 	public void displayTotalNumberOfReservation() {
 		System.out.println(totalNumOfReservation + "reservation created so far.\n");
 	}
-
 	
 	@Override
 	protected String getServiceType() {
@@ -115,7 +114,7 @@ public class Reservation extends Services{
 	}
 
 	@Override
-	protected Double calculateService() {
+	public double getCost() {
 		return getTotalCost();
 	}
 

@@ -1,4 +1,4 @@
-public abstract class Services {
+public abstract class Services implements Calculable{
 	protected int CustomerID;
 	
 	public Services() {
@@ -14,12 +14,10 @@ public abstract class Services {
 	}
 
 	protected abstract String getServiceType();
-	
-	protected abstract Double calculateService();
 
 	@Override
 	public String toString() {
-		return String.format("The cost for the %s service of reservation ID %d: %.2f", getServiceType(), getCustomerID(), calculateService());
+		return String.format("The cost for the %s service of reservation ID %d: %.2f", getServiceType(), getCustomerID(), getCost());
 	}
 	
 	

@@ -5,7 +5,10 @@ public enum MenuOption {
 	OPTION4("4. Add extra services to a reservation\n"),
 	OPTION5("5. Calculate total cost for each service\n"),
 	OPTION6("6. Display the total cost of every customer\n"),
-	OPTION7("7. Exit");
+	OPTION7("7. Add an employee\n"),
+	OPTION8("8. Add a bill\n"),
+	OPTION9("9. Get monthly balance\n"),
+	OPTION10("10. Exit");
 	
 	private String _option;
 	

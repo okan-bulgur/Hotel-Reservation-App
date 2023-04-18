@@ -34,7 +34,7 @@ public class Laundry extends Services{
 	}
 
 	@Override
-	protected Double calculateService() {
+	public double getCost() {
 		return price * getClothingPieces();
 	}
 	

@@ -1,11 +1,14 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HotelMenu {
 	
+	private static ArrayList<Calculable> calculables = new ArrayList<Calculable>();
+	
 	public static void main(String[] args) {
 		Scanner ms = new Scanner(System.in);			
 		
-		ServiceFunctions serviceFunctions = new ServiceFunctions();
+		ServiceFunctions serviceFunctions = new ServiceFunctions(calculables);
 		ServiceFunctions.Create serviceCreate = serviceFunctions.new Create(ms);
 		ServiceFunctions.Display serviceDisplay = serviceFunctions.new Display();
 		ServiceFunctions.Inputs serviceInputs = serviceFunctions.new Inputs(ms);
@@ -41,12 +44,24 @@ public class HotelMenu {
 			  	case "6":
 			  		serviceDisplay.displayServicesByCustomer();
 			  		break;
-			  		
+			  	
 			  	case "7":
+			  		//add an employee
+			  		break;
+			  	
+			  	case "8":
+			  		//add a bill
+			  		break;
+			  		
+			  	case "9":
+			  		//get monthly balance
+			  		break;
+			  		
+			  	case "10":
 			  		System.out.println("Exit...");
 			  		System.exit(0);
 			  		break;
-			  	
+			  				  	
 			  	default:
 			  		System.out.println("Please enter valid input!\n");
 			  		break;  		

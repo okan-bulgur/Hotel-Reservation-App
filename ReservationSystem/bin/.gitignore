@@ -2,3 +2,9 @@
 /ServiceFunctions$Create.class
 /ServiceFunctions$Display.class
 /ServiceFunctions$Inputs.class
+/Employees.class
+/Bills.class
+/Calculable.class
+/BillFunctions.class
+/BillsFunctions.class
+/EmployeesFunctions.class
