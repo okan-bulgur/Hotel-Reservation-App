@@ -8,3 +8,11 @@
 /ServicesManager$Inputs.class
 /ServicesManager.class
 /ReservationManager.class
+/LaundryManager.class
+/SpaManager.class
+/HotelMenu.class
+/BillManager.class
+/EmployeeManager$Create.class
+/EmployeeManager$Inputs.class
+/EmployeeManager.class
+/CalculableManager.class

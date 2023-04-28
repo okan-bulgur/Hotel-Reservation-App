@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
@@ -8,18 +7,22 @@ import java.util.Set;
 public class ServicesManager {
 	
 	Scanner scanner = new Scanner(System.in);	
-	private final String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	
 	private Map<Integer, ArrayList<Services>> services;
 	private Map<Integer, Double> totalCostByID;
 	private ArrayList<Calculable> calculables;
 	private ReservationManager reservationManager;
+	private LaundryManager laundryManager;
+	private SpaManager spaManager;
+
 	
-	public ServicesManager(Map <Integer, ArrayList<Services>> services,Map<Integer, Double> totalCostByID , ArrayList <Calculable> calculables, ReservationManager reservationManager) {
+	public ServicesManager(Map <Integer, ArrayList<Services>> services, Map<Integer, Double> totalCostByID, ArrayList <Calculable> calculables, ReservationManager reservationManager) {
 		this.services = services;
 		this.totalCostByID = totalCostByID;
 		this.calculables = calculables;
 		this.reservationManager = reservationManager;
+		laundryManager = new LaundryManager();
+		spaManager = new SpaManager();
 	}
 	
 	void addReservation() {
@@ -36,7 +39,7 @@ public class ServicesManager {
   		System.out.println("Reservation ID: " + Reservation.totalNumOfReservation + " is created\n");
 	}
 
-	void createService() {
+	void addExtraServices() {
 		if(Reservation.totalNumOfReservation == 0) {
 			System.out.println("There is not any reservation. Service cannot be used.");
 			return;
@@ -51,80 +54,29 @@ public class ServicesManager {
   		switch (servicesNo) {
   		
 			case 1:
-				service = createLaundry();
+				Laundry laundry = laundryManager.createLaundry();
+				service = (Services) laundry;
 				break;
 				
 			case 2:
-				service = createSpa();
+				Spa spa = spaManager.createSpa();
+				service = (Services) spa;
 				break;
 				
 			default:
 				System.out.println("Enter a valid input.");
 				break;
 		}
+  		
   		if(service != null) {	  	
   			ArrayList<Services> servicesByID = services.get(service.getCustomerID());
   			servicesByID.add(service);
   			services.put(service.getCustomerID(), servicesByID);
+  			totalCostByID.put(service.CustomerID, totalCostByID.get(service.CustomerID) + service.getCost());
   			calculables.add(service);
   		}
 	}
-
-	Services createLaundry() {
-		System.out.println("Type the reservation ID to credit this service:");
-  		int CustomerID = scanner.nextInt();
-  		
-  		if(Reservation.totalNumOfReservation < CustomerID) {
-  			System.out.println("Invalid customer ID.");
-  			return null;
-		}
-  		
-		System.out.println("How many pieces of clothing?");
-		int piecesOfClothing = scanner.nextInt();
-		
-		Services laundry =  new Laundry(CustomerID, piecesOfClothing);
-		totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + laundry.getCost());
-		return laundry;
-	}
 	
-	Services createSpa() {
-		System.out.println("Type the reservation ID to credit this service:");
-  		int CustomerID = scanner.nextInt();
-  		
-  		if(Reservation.totalNumOfReservation < CustomerID) {
-  			System.out.println("Invalid customer ID.");
-  			return null;
-		}
-  		
-		System.out.println("How many days?");
-		int days = scanner.nextInt();
-		
-		Spa spa = new Spa(CustomerID, days);
-		totalCostByID.put(CustomerID, totalCostByID.get(CustomerID) + spa.getCost());
-		return spa;
-	}
-
-	double inComeStatements(String month) {
-		double inCome = 0;
-		
-		Set<Integer> ID = services.keySet();
-		if(services.size() == 0) {
-			return inCome;
-		}
-		for(Integer id : ID) {
-			ArrayList<Services> servicesByID = services.get(id);
-			
-			Reservation reservation = (Reservation)servicesByID.get(0);
-			if(reservation.getReservationMonth().equals(month)) {
-				for(Services service : servicesByID) {
-					System.out.println("For reservation ID: "+ id +", Service type: " + service.getServiceType() + ", Service Cost: " + service.getCost());
-					inCome += service.getCost();
-				}
-			}
-		}
-		return inCome;
-	}
-
 	void displayServices() {
 		if(services.size() == 0) {
   			System.out.println("There is not service.");
@@ -156,17 +108,5 @@ public class ServicesManager {
 	
 	int displayServicesSize() {
 		return services.size();
-	}
-
-	String inputMonth() {
-		System.out.println("Enter Month: ");
-		scanner.nextLine(); //to fix error
-  		String month = scanner.nextLine();
-  		
-  		if(!Arrays.asList(months).contains(month)) {
-  			System.out.println("Invalid input.\n");
-  			month = inputMonth();
-  		}
-  		return month;
 	}
 }
