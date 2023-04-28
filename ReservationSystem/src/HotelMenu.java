@@ -56,7 +56,7 @@ public class HotelMenu {
 			  		break;
 			  		
 			  	case "10":
-			  		System.out.println("10. List all Services sorted based on cost");
+			  		hotel.servicesManager.sortServices();
 			  		break;
 			  				 
 			  	case "11":

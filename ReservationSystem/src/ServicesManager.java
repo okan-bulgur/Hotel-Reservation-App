@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -100,5 +101,24 @@ public class ServicesManager {
 	
 	int displayServicesSize() {
 		return hotel.services.size();
+	}
+
+	void displayServiceInfo(Services service) {
+		System.out.println("Customer ID: " + service.getCustomerID() + ", Service Type: " + service.getServiceType() + ", Cost: " + service.getCost());
+	}
+	
+	void sortServices() {
+		
+		ArrayList<Services> allServices = new ArrayList<Services>();
+		
+		for(ArrayList<Services> services : hotel.services.values()) {
+			allServices.addAll(services);
+		}
+		
+		Collections.sort(allServices, new CostComparator());
+		
+		for(Services service : allServices) {
+			displayServiceInfo(service);
+		}
 	}
 }
