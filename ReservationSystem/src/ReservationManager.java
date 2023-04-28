@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -153,5 +155,17 @@ public class ReservationManager {
 
 	int displayReservationsSize() {
 		return hotel.reservations.size();
+	}
+
+	void sortReservations() {
+		
+		ArrayList<Reservation> sortedReservations = new ArrayList<Reservation>();
+		sortedReservations = hotel.reservations;
+		
+		Collections.sort(sortedReservations);
+		
+		for(Reservation reservation : sortedReservations) {
+			reservation.displayServiceInfo(reservation);
+		}
 	}
 }

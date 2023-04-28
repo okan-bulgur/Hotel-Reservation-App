@@ -60,11 +60,11 @@ public class HotelMenu {
 			  		break;
 			  				 
 			  	case "11":
-			  		System.out.println("11. List all Reservations sorted based on hotel names");
+			  		hotel.reservationManager.sortReservations();
 			  		break;
 			  				 
 			  	case "12":
-			  		System.out.println("Exit...");
+			  		System.out.println("Exiting, Goodbye!");
 			  		System.exit(0);
 			  		break;
 			  				  	

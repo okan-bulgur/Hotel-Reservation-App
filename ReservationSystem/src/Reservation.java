@@ -1,4 +1,4 @@
-public class Reservation extends Services{
+public class Reservation extends Services implements Comparable<Reservation> {
 	
 	private String _hotelName;
 	private String _reservationMonth;
@@ -118,5 +118,15 @@ public class Reservation extends Services{
 		return getTotalCost();
 	}
 
+	@Override
+	public int compareTo(Reservation r) {
+		return this.getHotelName().compareTo(r.getHotelName());
+	}
+
+	@Override
+	void displayServiceInfo(Services service) {
+		System.out.printf("Hotel Name: " + ((Reservation) service).getHotelName() + ", ");
+		super.displayServiceInfo(service);
+	}
 	
 }

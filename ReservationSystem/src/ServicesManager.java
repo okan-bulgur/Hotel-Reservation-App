@@ -102,10 +102,6 @@ public class ServicesManager {
 	int displayServicesSize() {
 		return hotel.services.size();
 	}
-
-	void displayServiceInfo(Services service) {
-		System.out.println("Customer ID: " + service.getCustomerID() + ", Service Type: " + service.getServiceType() + ", Cost: " + service.getCost());
-	}
 	
 	void sortServices() {
 		
@@ -118,7 +114,7 @@ public class ServicesManager {
 		Collections.sort(allServices, new CostComparator());
 		
 		for(Services service : allServices) {
-			displayServiceInfo(service);
+			service.displayServiceInfo((Services)service);
 		}
 	}
 }
