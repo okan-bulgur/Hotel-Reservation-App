@@ -8,7 +8,9 @@ public enum MenuOption {
 	OPTION7("7. Add an employee\n"),
 	OPTION8("8. Add a bill\n"),
 	OPTION9("9. Get monthly balance\n"),
-	OPTION10("10. Exit");
+	OPTION10("10. List all Services sorted based on cost\n"),
+	OPTION11("11. List all Reservations sorted based on hotel names\n"),
+	OPTION12("12. Exit");
 	
 	private String _option;
 	
