@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -8,33 +7,26 @@ public class ServicesManager {
 	
 	Scanner scanner = new Scanner(System.in);	
 	
-	private Map<Integer, ArrayList<Services>> services;
-	private Map<Integer, Double> totalCostByID;
-	private ArrayList<Calculable> calculables;
-	private ReservationManager reservationManager;
+	private Hotel hotel;
 	private LaundryManager laundryManager;
 	private SpaManager spaManager;
 
-	
-	public ServicesManager(Map <Integer, ArrayList<Services>> services, Map<Integer, Double> totalCostByID, ArrayList <Calculable> calculables, ReservationManager reservationManager) {
-		this.services = services;
-		this.totalCostByID = totalCostByID;
-		this.calculables = calculables;
-		this.reservationManager = reservationManager;
+	public ServicesManager(Hotel hotel) {
+		this.hotel = hotel;
 		laundryManager = new LaundryManager();
 		spaManager = new SpaManager();
 	}
 	
 	void addReservation() {
-		Services reservation = reservationManager.createReservation();
+		Services reservation = hotel.reservationManager.createReservation();
 		
 		ArrayList<Services> servicesByID = new ArrayList<Services>();
 		servicesByID.add(reservation);
-		services.put(reservation.getCustomerID(), servicesByID);
+		hotel.services.put(reservation.getCustomerID(), servicesByID);
 		
-		totalCostByID.put(Reservation.totalNumOfReservation, reservation.getCost());
+		hotel.totalCostByID.put(Reservation.totalNumOfReservation, reservation.getCost());
 
-		calculables.add(reservation);
+		hotel.calculables.add(reservation);
 		
   		System.out.println("Reservation ID: " + Reservation.totalNumOfReservation + " is created\n");
 	}
@@ -69,22 +61,22 @@ public class ServicesManager {
 		}
   		
   		if(service != null) {	  	
-  			ArrayList<Services> servicesByID = services.get(service.getCustomerID());
+  			ArrayList<Services> servicesByID = hotel.services.get(service.getCustomerID());
   			servicesByID.add(service);
-  			services.put(service.getCustomerID(), servicesByID);
-  			totalCostByID.put(service.CustomerID, totalCostByID.get(service.CustomerID) + service.getCost());
-  			calculables.add(service);
+  			hotel.services.put(service.getCustomerID(), servicesByID);
+  			hotel.totalCostByID.put(service.CustomerID, hotel.totalCostByID.get(service.CustomerID) + service.getCost());
+  			hotel.calculables.add(service);
   		}
 	}
 	
 	void displayServices() {
-		if(services.size() == 0) {
+		if(hotel.services.size() == 0) {
   			System.out.println("There is not service.");
   			return;
   		}
-		Set<Integer> ID = services.keySet();
+		Set<Integer> ID = hotel.services.keySet();
 		for(Integer id : ID) {
-			ArrayList<Services> servicesByID = services.get(id);
+			ArrayList<Services> servicesByID = hotel.services.get(id);
 			
 			Iterator<Services> itr = servicesByID.listIterator();
 			while(itr.hasNext()) {
@@ -95,18 +87,18 @@ public class ServicesManager {
 	}
 
 	void displayTotalCostByCustomer() {
-		if(services.size() == 0) {
+		if(hotel.services.size() == 0) {
   			System.out.println("There is not any services.");
   			return;
   		}
 		
-		for(Integer ID : totalCostByID.keySet()) {
-			double totalCost = totalCostByID.get(ID);
+		for(Integer ID : hotel.totalCostByID.keySet()) {
+			double totalCost = hotel.totalCostByID.get(ID);
 			System.out.println("The total cost of all services of the reservation with ID: "+ ID + " is " + totalCost);
 		}
 	}
 	
 	int displayServicesSize() {
-		return services.size();
+		return hotel.services.size();
 	}
 }

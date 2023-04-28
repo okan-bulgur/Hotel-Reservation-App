@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -10,10 +9,10 @@ public class ReservationManager {
 	private final String roomTypes[] = {"Single", "Double", "Club", "Family", "Family with View", "Suite"};
 	private final String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	
-	private ArrayList<Reservation> reservations;
+	private Hotel hotel;
 	
-	public ReservationManager(ArrayList<Reservation> reservations) {
-		this.reservations = reservations;
+	public ReservationManager(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
 	Reservation  createReservation() {
@@ -27,7 +26,7 @@ public class ReservationManager {
 		Reservation reservation = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room); 
 		Reservation.totalNumOfReservation++;
 		
-		reservations.add(reservation);
+		hotel.reservations.add(reservation);
 		
 		return reservation;
 	}
@@ -119,11 +118,11 @@ public class ReservationManager {
 	}
 
 	void roomDisplay() {
-		if(reservations.size() == 0) {
+		if(hotel.reservations.size() == 0) {
   			System.out.println("No room has been created yet.\n");
 		}
 		else {
-			for(Reservation reservation : reservations) {
+			for(Reservation reservation : hotel.reservations) {
 				reservation.displayInfo();
 			}
 		}
@@ -131,7 +130,7 @@ public class ReservationManager {
 	
 	void displayReservationByCity() {
 		String city = inputCityName();
-		Iterator<Reservation> itr = reservations.listIterator();
+		Iterator<Reservation> itr = hotel.reservations.listIterator();
 		
 		Reservation reservation;
 		String hotelName;
@@ -153,6 +152,6 @@ public class ReservationManager {
 	}
 
 	int displayReservationsSize() {
-		return reservations.size();
+		return hotel.reservations.size();
 	}
 }

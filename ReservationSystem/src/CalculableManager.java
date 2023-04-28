@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -8,14 +7,12 @@ public class CalculableManager {
 
 	Scanner scanner = new Scanner(System.in);	
 	
-	private ArrayList<Calculable> calculables;
-	private Map<Integer, ArrayList<Services>> services;
+	private Hotel hotel;
 	
 	private final String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
-	public CalculableManager(ArrayList<Calculable> calculables, Map<Integer, ArrayList<Services>> services) {
-		this.calculables = calculables;
-		this.services = services;
+	public CalculableManager(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
 	void displayMonthlyBalance() {
@@ -25,7 +22,7 @@ public class CalculableManager {
   		double billsCost = 0;
   		double employeeCost = Employees.totalMonthlyPayments;
   		
-  		for(Calculable calculable : calculables) {
+  		for(Calculable calculable : hotel.calculables) {
   			if(calculable instanceof Bills && ((Bills) calculable).getMonth().equals(month)) {
   				billsCost += calculable.getCost();
   			}
@@ -40,12 +37,12 @@ public class CalculableManager {
 	double inComeStatements(String month) {
 		double inCome = 0;
 		
-		Set<Integer> ID = services.keySet();
-		if(services.size() == 0) {
+		Set<Integer> ID = hotel.services.keySet();
+		if(hotel.services.size() == 0) {
 			return inCome;
 		}
 		for(Integer id : ID) {
-			ArrayList<Services> servicesByID = services.get(id);
+			ArrayList<Services> servicesByID = hotel.services.get(id);
 			
 			Reservation reservation = (Reservation)servicesByID.get(0);
 			

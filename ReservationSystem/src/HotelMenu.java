@@ -4,18 +4,10 @@ public class HotelMenu {
 	
 	Scanner scanner = new Scanner(System.in);	
 	
-	private ReservationManager reservationManager;
-	private ServicesManager servicesManager;
-	private EmployeeManager employeeManager;
-	private BillManager billManager;
-	private CalculableManager calculableManager;
+	private Hotel hotel;
 		
-	public HotelMenu(ReservationManager reservationManager, ServicesManager servicesManager, EmployeeManager employeeManager, BillManager billManager, CalculableManager calculableManager) {
-		this.reservationManager = reservationManager;
-		this.servicesManager = servicesManager;
-		this.employeeManager = employeeManager;
-		this.billManager = billManager;
-		this.calculableManager = calculableManager;
+	public HotelMenu(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
 	void displayHotelMenu() {
@@ -28,39 +20,39 @@ public class HotelMenu {
 			
 		  		case "1":
 		  			displayRoomTypesInfo();
-		  			servicesManager.addReservation();
+		  		    hotel.servicesManager.addReservation();
 			  		break;
 			  	
 			  	case "2":
-			  		reservationManager.roomDisplay();
+			  		hotel.reservationManager.roomDisplay();
 			  		break;
 			  		
 			  	case "3":
-			  		reservationManager.displayReservationByCity();
+			  		hotel.reservationManager.displayReservationByCity();
 			  		break;
 			  		
 			  	case "4":
-			  		servicesManager.addExtraServices();
+			  		hotel.servicesManager.addExtraServices();
 			  		break;
 			  		
 			  	case "5":
-			  		servicesManager.displayServices();
+			  		hotel.servicesManager.displayServices();
 			  		break;
 	
 			  	case "6":
-			  		servicesManager.displayTotalCostByCustomer();
+			  		hotel.servicesManager.displayTotalCostByCustomer();
 			  		break;
 			  	
 			  	case "7":
-			  		employeeManager.createEmployee();
+			  		hotel.employeeManager.createEmployee();
 			  		break;
 			  	
 			  	case "8":
-			  		billManager.createBill();
+			  		hotel.billManager.createBill();
 			  		break;
 			  		
 			  	case "9":
-			  		calculableManager.displayMonthlyBalance();
+			  		hotel.calculableManager.displayMonthlyBalance();
 			  		break;
 			  		
 			  	case "10":

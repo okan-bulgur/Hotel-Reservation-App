@@ -7,23 +7,29 @@ public class Hotel {
 	
 	Scanner scanner = new Scanner(System.in);	
 	
-	private static Map<Integer, ArrayList<Services>> services = new HashMap<Integer, ArrayList<Services>>();
-	private static ArrayList<Reservation> reservations = new ArrayList<Reservation>();
-	private static Map<Integer, Double> totalCostByID = new HashMap<Integer, Double>();
-	private static ArrayList<Calculable> calculables = new ArrayList<Calculable>();
+	public Map<Integer, ArrayList<Services>> services = new HashMap<Integer, ArrayList<Services>>();
+	public ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+	public Map<Integer, Double> totalCostByID = new HashMap<Integer, Double>();
+	public ArrayList<Calculable> calculables = new ArrayList<Calculable>();
 	
-	private static ReservationManager reservationManager = new ReservationManager(reservations);
-	private static ServicesManager servicesManager = new ServicesManager(services, totalCostByID, calculables, reservationManager);
+	public CalculableManager calculableManager;
+	public ServicesManager servicesManager;
+	public ReservationManager reservationManager;
+	public EmployeeManager employeeManager;
+	public BillManager billManager;
 	
-	
-	private static EmployeeManager employeeManager = new EmployeeManager(calculables);
-	private static BillManager billManager = new BillManager(calculables);
-	
-	private static CalculableManager calculableManager = new CalculableManager(calculables, services);
+	public Hotel() {		
+		servicesManager = new ServicesManager(this);
+		reservationManager = new ReservationManager(this);
+		employeeManager = new EmployeeManager(this);
+		billManager = new BillManager(this);
+		calculableManager = new CalculableManager(this);
+	}
 	
 	public static void main(String[] args) {
 		
-		HotelMenu hotelMenu = new HotelMenu(reservationManager, servicesManager, employeeManager, billManager, calculableManager);
+		Hotel hotel = new Hotel();
+		HotelMenu hotelMenu = new HotelMenu(hotel);
 		hotelMenu.displayHotelMenu();
     }
 }

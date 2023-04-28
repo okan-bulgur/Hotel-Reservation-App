@@ -1,14 +1,13 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BillManager {
 	
 	Scanner scanner = new Scanner(System.in);
 
-	private ArrayList<Calculable> calculables;
+	private Hotel hotel;
 		
-	public BillManager(ArrayList <Calculable> calculables) {
-		this.calculables = calculables;
+	public BillManager(Hotel hotel) {
+		this.hotel = hotel;
 	}
 		
 	void createBill() {
@@ -17,7 +16,7 @@ public class BillManager {
 		String month = inputMonth();
 		
 		Bills bill = new Bills(type, amount, month);
-		calculables.add(bill);
+		hotel.calculables.add(bill);
 	}
 
 	String inputType() {

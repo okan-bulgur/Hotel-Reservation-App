@@ -1,14 +1,13 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EmployeeManager {
 	
 	Scanner scanner = new Scanner(System.in);
 
-	private ArrayList<Calculable> calculables;
+	private Hotel hotel;
 		
-	public EmployeeManager(ArrayList <Calculable> calculables) {
-		this.calculables = calculables;
+	public EmployeeManager(Hotel hotel) {
+		this.hotel = hotel;
 	}
 	
 	void createEmployee() {
@@ -18,7 +17,7 @@ public class EmployeeManager {
 		double monthlyPayment = inputMonthlyPayment();
 		
 		Employees employee = new Employees(name, surname, ID, monthlyPayment);
-		calculables.add(employee);
+		hotel.calculables.add(employee);
 	}
 
 	String inputName() {
