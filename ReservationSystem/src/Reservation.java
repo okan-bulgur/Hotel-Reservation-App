@@ -123,10 +123,10 @@ public class Reservation extends Services implements Comparable<Reservation> {
 		return this.getHotelName().compareTo(r.getHotelName());
 	}
 
-	@Override
-	void displayServiceInfo(Services service) {
+	//@Override
+	static void displayServiceInfo(Services service) {
 		System.out.printf("Hotel Name: " + ((Reservation) service).getHotelName() + ", ");
-		super.displayServiceInfo(service);
+		System.out.println("Customer ID: " + service.getCustomerID() + ", Service Type: " + service.getServiceType() + ", Cost: " + service.getCost());
 	}
 	
 }

@@ -165,7 +165,7 @@ public class ReservationManager {
 		Collections.sort(sortedReservations);
 		
 		for(Reservation reservation : sortedReservations) {
-			reservation.displayServiceInfo(reservation);
+			Reservation.displayServiceInfo(reservation);
 		}
 	}
 }

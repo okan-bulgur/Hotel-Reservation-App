@@ -114,7 +114,7 @@ public class ServicesManager {
 		Collections.sort(allServices, new CostComparator());
 		
 		for(Services service : allServices) {
-			service.displayServiceInfo((Services)service);
+			Services.displayServiceInfo((Services)service);
 		}
 	}
 }

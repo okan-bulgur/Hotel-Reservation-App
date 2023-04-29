@@ -20,7 +20,7 @@ public abstract class Services implements Calculable{
 		return String.format("The cost for the %s service of reservation ID %d: %.2f", getServiceType(), getCustomerID(), getCost());
 	}
 	
-	void displayServiceInfo(Services service) {
+	static void displayServiceInfo(Services service) {
 		System.out.println("Customer ID: " + service.getCustomerID() + ", Service Type: " + service.getServiceType() + ", Cost: " + service.getCost());
 	}
 }
