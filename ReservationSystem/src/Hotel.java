@@ -26,7 +26,7 @@ public class Hotel {
 		calculableManager = new CalculableManager(this);
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		Hotel hotel = new Hotel();
 		HotelMenu hotelMenu = new HotelMenu(hotel);

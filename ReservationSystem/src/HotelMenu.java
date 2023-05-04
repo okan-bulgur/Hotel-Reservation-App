@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class HotelMenu {
@@ -10,78 +11,93 @@ public class HotelMenu {
 		this.hotel = hotel;
 	}
 	
-	void displayHotelMenu() {
+	void displayHotelMenu() throws Exception {
 		
 		while(true) {
-			String userInput = menuScreen();
-			System.out.println();
-			
+			int userInput = 0;
+			userInput = getInput();
+			System.out.println();				
+
 			switch(userInput) {
 			
-		  		case "1":
+		  		case 1:
 		  			displayRoomTypesInfo();
 		  		    hotel.servicesManager.addReservation();
 			  		break;
 			  	
-			  	case "2":
+			  	case 2:
 			  		hotel.reservationManager.roomDisplay();
 			  		break;
 			  		
-			  	case "3":
+			  	case 3:
 			  		hotel.reservationManager.displayReservationByCity();
 			  		break;
 			  		
-			  	case "4":
+			  	case 4:
 			  		hotel.servicesManager.addExtraServices();
 			  		break;
 			  		
-			  	case "5":
+			  	case 5:
 			  		hotel.servicesManager.displayServices();
 			  		break;
 	
-			  	case "6":
+			  	case 6:
 			  		hotel.servicesManager.displayTotalCostByCustomer();
 			  		break;
 			  	
-			  	case "7":
+			  	case 7:
 			  		hotel.employeeManager.createEmployee();
 			  		break;
 			  	
-			  	case "8":
+			  	case 8:
 			  		hotel.billManager.createBill();
 			  		break;
 			  		
-			  	case "9":
+			  	case 9:
 			  		hotel.calculableManager.displayMonthlyBalance();
 			  		break;
 			  		
-			  	case "10":
+			  	case 10:
 			  		hotel.servicesManager.sortServices();
 			  		break;
 			  				 
-			  	case "11":
+			  	case 11:
 			  		hotel.reservationManager.sortReservations();
 			  		break;
 			  				 
-			  	case "12":
+			  	case 12:
 			  		System.out.println("Exiting, Goodbye!");
 			  		System.exit(0);
 			  		break;
 			  				  	
 			  	default:
-			  		System.out.println("Please enter valid input!\n");
+			  		System.out.println("You entered an invalid menu option. Enter again.\n");
 			  		break;  		
 			}
 		}
 	}
 	
-	String menuScreen() {
-		System.out.println();
+	int getInput(){
+		int userInput = 0;
+		
+		while(true) {
+			try {
+				userInput = 0;
+				displayMenuOptions();
+				userInput = scanner.nextInt();			
+				break;
+			}catch (InputMismatchException e) {
+				System.out.println("\nYou entered an invalid menu option. Enter again.\n");
+				scanner.nextLine();
+			}
+		}
+		return userInput;
+	}
+	
+	void displayMenuOptions() {
 		for(MenuOption menuOption : MenuOption.values()) {
 			System.out.printf(menuOption.getOption());
 		}
-		String userInput = scanner.next();
-		return userInput;
 	}
 	
 	void displayRoomTypesInfo() {

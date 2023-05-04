@@ -19,7 +19,16 @@ public class ReservationManager {
 	
 	Reservation  createReservation() {
 		String hotelName = inputHotelName();
-		String roomType = inputRoomType();
+		String roomType = null;
+		
+		while(true) {			
+			try {			
+				roomType = inputRoomType();
+				break;
+			} catch (InvalidRoomTypeException e) {
+				System.out.println(e.getMessage());
+			}
+		}
 		String reservationMonth = inputReservationMonth();
 		int reservationStart = inputReservationStart();
 		int reservationEnd = inputReservationEnd(reservationStart);	
@@ -86,13 +95,12 @@ public class ReservationManager {
   		return reservationEnd;
 	}
 	
-	String inputRoomType() {
+	String inputRoomType() throws InvalidRoomTypeException{
 		System.out.println("Hotel Type: ");
-  		String roomType = scanner.nextLine();
-  		
-  		if(!Arrays.asList(roomTypes).contains(roomType)) {
-  			System.out.println("Invalid input.\n");
-  			roomType = inputRoomType();
+		String roomType = scanner.nextLine();
+		
+		if(!Arrays.asList(roomTypes).contains(roomType)) {
+  			throw new InvalidRoomTypeException("Room Type is not valid!\n");
   		}
   		return roomType;
 	}
