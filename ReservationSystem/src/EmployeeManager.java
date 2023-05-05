@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class EmployeeManager {
@@ -32,12 +33,33 @@ public class EmployeeManager {
 	}
 	
 	int inputID() {
-		System.out.println("ID:");
-		return scanner.nextInt();
+		int ID = 0;
+		while(true) {			
+			try {
+				System.out.println("ID:");
+				ID = scanner.nextInt();
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("\nID must be a numeric value!\n");
+				scanner.nextLine();
+			}
+		}
+		return ID;
 	}
 	
 	double inputMonthlyPayment() {
-		System.out.println("Monthly Payment:");
-		return scanner.nextDouble();
+		double monthlyPayment = 0;
+		
+		while(true) {
+			try {
+				System.out.println("Monthly Payment:");
+				monthlyPayment = scanner.nextDouble();
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("Monthly Payment must be a numeric value!");
+				scanner.nextLine();
+			}
+		}
+		return monthlyPayment;
 	}
 }

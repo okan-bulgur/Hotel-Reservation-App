@@ -57,7 +57,7 @@ public class ServicesManager {
 				break;
 				
 			default:
-				System.out.println("Enter a valid input.");
+				System.err.println("Invalid input.");
 				break;
 		}
   		
@@ -72,7 +72,7 @@ public class ServicesManager {
 	
 	void displayServices() {
 		if(hotel.services.size() == 0) {
-  			System.out.println("There is not service.");
+  			System.err.println("There is not service.");
   			return;
   		}
 		Set<Integer> ID = hotel.services.keySet();

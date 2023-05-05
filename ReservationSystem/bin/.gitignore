@@ -1,1 +1,4 @@
 /InvalidRoomTypeException.class
+/InvalidReservationDateException.class
+/InvalidMonthException.class
+/InvalidIDException.class

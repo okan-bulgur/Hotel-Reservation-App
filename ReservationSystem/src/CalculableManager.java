@@ -9,14 +9,24 @@ public class CalculableManager {
 	
 	private Hotel hotel;
 	
-	private final String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private final String months[] = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
 
 	public CalculableManager(Hotel hotel) {
 		this.hotel = hotel;
 	}
 	
 	void displayMonthlyBalance() {
-		String month = inputMonth();
+		String month = null;
+		
+		while(true) {			
+			try {							
+				month = inputMonth();
+				break;
+			} catch (InvalidMonthException e) {
+				System.err.println(e.getMessage());
+			}
+		}
+
 		System.out.println();
   		double inCome = inComeStatements(month);
   		double billsCost = 0;
@@ -31,7 +41,8 @@ public class CalculableManager {
   		System.out.println("Total monthly income: " + inCome);
   		System.out.println("Total monthly bills due: " + billsCost);
   		System.out.println("Total monthly employee cost: " + employeeCost);
-  		System.out.println("TEnd of month balance: " + balance);
+  		System.out.println("End of month balance: " + balance);
+  		System.out.println();
 	}
 	
 	double inComeStatements(String month) {
@@ -56,13 +67,12 @@ public class CalculableManager {
 		return inCome;
 	}	
 	
-	String inputMonth() {
+	String inputMonth() throws InvalidMonthException {
 		System.out.println("Enter Month: ");
-  		String month = scanner.nextLine();
+  		String month = scanner.nextLine().toLowerCase();
   		
-  		if(!Arrays.asList(months).contains(month)) {
-  			System.out.println("Invalid input.\n");
-  			month = inputMonth();
+  		if(!Arrays.asList(months).contains(month.toUpperCase())) {
+  			throw new InvalidMonthException("\nInvalid input.\n");
   		}
   		return month;
 	}

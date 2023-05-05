@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ public class ReservationManager {
 	Scanner scanner = new Scanner(System.in);	
 	
 	private final String roomTypes[] = {"Single", "Double", "Club", "Family", "Family with View", "Suite"};
-	private final String months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private final String months[] = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
 	
 	private Hotel hotel;
 	
@@ -20,16 +21,26 @@ public class ReservationManager {
 	Reservation  createReservation() {
 		String hotelName = inputHotelName();
 		String roomType = null;
+		String reservationMonth = null;
 		
 		while(true) {			
 			try {			
 				roomType = inputRoomType();
 				break;
 			} catch (InvalidRoomTypeException e) {
-				System.out.println(e.getMessage());
+				System.err.println(e.getMessage());
 			}
 		}
-		String reservationMonth = inputReservationMonth();
+		
+		while(true) {			
+			try {							
+				reservationMonth = inputReservationMonth();
+				break;
+			} catch (InvalidMonthException e) {
+				System.err.println(e.getMessage());
+			}
+		}
+		
 		int reservationStart = inputReservationStart();
 		int reservationEnd = inputReservationEnd(reservationStart);	
 		Room room = createRoom(roomType);	
@@ -69,29 +80,51 @@ public class ReservationManager {
   		return hotelName;
 	}
 	
-	String inputReservationMonth() {
+	String inputReservationMonth() throws InvalidMonthException {
 		System.out.println("Reservation Month: ");
-  		String reservationMonth = scanner.nextLine();
+  		String reservationMonth = scanner.nextLine().toLowerCase();
   		
-  		if(!Arrays.asList(months).contains(reservationMonth)) {
-  			System.out.println("Invalid input.\n");
-  			reservationMonth = inputReservationMonth();
+  		if(!Arrays.asList(months).contains(reservationMonth.toUpperCase())) {
+  			throw new InvalidMonthException("\nInvalid input.\n");
   		}
   		return reservationMonth;
 	}
 	
 	int inputReservationStart() {
-		System.out.println("Reservation Start: ");
-  		int reservationStart = scanner.nextInt();
-  		reservationStart = checkReservationStart(reservationStart);
+		int reservationStart = 0;
+		while(true) {
+			try {
+				System.out.println("Reservation Start: ");
+				reservationStart = scanner.nextInt();
+				checkReservationStart(reservationStart);
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("\nReservation Start must be a numeric value!\n");
+				scanner.nextLine();
+			} catch (InvalidReservationDateException e) {
+				System.err.println(e.getMessage());
+				scanner.nextLine();
+			}
+		}
   		return reservationStart;
 	}
 	
 	int inputReservationEnd(int reservationStart) {
-		System.out.println("Reservation End: ");
-  		int reservationEnd = scanner.nextInt();
-  		scanner.nextLine(); //to fix error
-  		reservationEnd = checkReservationEnd(reservationStart, reservationEnd);
+		int reservationEnd = 0;
+		while(true) {
+			try {
+				System.out.println("Reservation End: ");
+				reservationEnd = scanner.nextInt();
+				checkReservationEnd(reservationStart, reservationEnd);		
+				break;
+			} catch (InputMismatchException e) {
+				System.err.println("\nReservation End must be a numeric value!\n");
+				scanner.nextLine();
+			} catch (InvalidReservationDateException e) {
+				System.err.println(e.getMessage());
+				scanner.nextLine();
+			}
+		}
   		return reservationEnd;
 	}
 	
@@ -108,28 +141,25 @@ public class ReservationManager {
 	String inputCityName() {
 		System.out.println("Type a city name for a reservation search: ");
 		String cityName = scanner.nextLine();
+		scanner.nextLine(); //to fix error
 		return cityName;
 	}
 	
-	int checkReservationStart(int reservationStart) {
-		if(reservationStart <= 0 || reservationStart > 30) {
-			System.out.println("Invalid input. Please enter again.\n");
-  			reservationStart = inputReservationStart();
+	void checkReservationStart(int reservationStart) throws InvalidReservationDateException {
+		if(reservationStart <= 0 || reservationStart >= 30) {
+			throw new InvalidReservationDateException("\nInvalid reservation start.\n");
 		}
-		return reservationStart;
 	}
 	
-	int checkReservationEnd(int reservationStart, int reservationEnd) {
+	void checkReservationEnd(int reservationStart, int reservationEnd) throws InvalidReservationDateException {
 		if(reservationStart >= reservationEnd || reservationEnd > 30) {
-  			System.out.println("Invalid input. Please enter again.\n");
-  			reservationEnd = inputReservationEnd(reservationStart);
+			throw new InvalidReservationDateException("\nInvalid reservation end.\n");
   		}
-		return reservationEnd;
 	}
 
 	void roomDisplay() {
 		if(hotel.reservations.size() == 0) {
-  			System.out.println("No room has been created yet.\n");
+  			System.err.println("No room has been created yet.\n");
 		}
 		else {
 			for(Reservation reservation : hotel.reservations) {
@@ -157,7 +187,7 @@ public class ReservationManager {
 			}
 		}
 		if(!check) {
-			System.out.println("There is not reservation in " + city + "\n");
+			System.err.println("There is not reservation in " + city + "\n");
 		}
 	}
 

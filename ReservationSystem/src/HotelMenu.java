@@ -11,7 +11,7 @@ public class HotelMenu {
 		this.hotel = hotel;
 	}
 	
-	void displayHotelMenu() throws Exception {
+	void displayHotelMenu() {
 		
 		while(true) {
 			int userInput = 0;
@@ -71,7 +71,7 @@ public class HotelMenu {
 			  		break;
 			  				  	
 			  	default:
-			  		System.out.println("You entered an invalid menu option. Enter again.\n");
+			  		System.err.println("\nYou entered an invalid menu option. Enter again.\n");
 			  		break;  		
 			}
 		}
@@ -82,12 +82,11 @@ public class HotelMenu {
 		
 		while(true) {
 			try {
-				userInput = 0;
 				displayMenuOptions();
 				userInput = scanner.nextInt();			
 				break;
 			}catch (InputMismatchException e) {
-				System.out.println("\nYou entered an invalid menu option. Enter again.\n");
+				System.err.println("\nYou entered an invalid menu option. Enter again.\n");
 				scanner.nextLine();
 			}
 		}
@@ -95,6 +94,7 @@ public class HotelMenu {
 	}
 	
 	void displayMenuOptions() {
+		System.out.println();
 		for(MenuOption menuOption : MenuOption.values()) {
 			System.out.printf(menuOption.getOption());
 		}
