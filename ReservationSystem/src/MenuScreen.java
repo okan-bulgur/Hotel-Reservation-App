@@ -3,17 +3,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
 
 public class MenuScreen extends ScreenManager {
 
@@ -53,10 +50,18 @@ public class MenuScreen extends ScreenManager {
 		JMenu newMenu = new JMenu("New");
 		JMenu helpMenu = new JMenu("Help");
 		
+		JMenuItem exit = new JMenuItem("Exit");
 		JMenuItem reservation = new JMenuItem("Reservation");
 		JMenuItem services = new JMenuItem("Services");
-		
+		JMenuItem contents = new JMenuItem("Contents");
 		JMenuItem about = new JMenuItem("About");
+		
+		exit.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);				
+			}
+		});
 		
 		reservation.addActionListener(new ActionListener() {
 			
@@ -72,10 +77,29 @@ public class MenuScreen extends ScreenManager {
 				hotel.servicesManager.addExtraServices();
 			}
 		});
+
+		contents.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = ""
+						+ "1) You can create reservation in new menu.\n"
+						+ "2) You can create services in new menu.\n"
+						+ "3) You can display all reservation with Display Reservation button.\n"
+						+ "4) You can display all services with Display Extra Services button.\n"
+						+ "5) You can display reservation by specific city with Display Reservation For City button.";
+ 				JOptionPane.showMessageDialog(frame, message);
+			}
+		});
+
+		about.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(frame, "Okan Bulgur 20200702017");
+			}
+		});
 		
+		fileMenu.add(exit);
 		newMenu.add(reservation);
 		newMenu.add(services);
-		
+		helpMenu.add(contents);
 		helpMenu.add(about);
 		
 		menuBar.add(fileMenu);
