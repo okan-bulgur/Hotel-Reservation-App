@@ -94,7 +94,6 @@ public class HotelMenu {
 	}
 	
 	void displayMenuOptions() {
-		System.out.println();
 		for(MenuOption menuOption : MenuOption.values()) {
 			System.out.printf(menuOption.getOption());
 		}

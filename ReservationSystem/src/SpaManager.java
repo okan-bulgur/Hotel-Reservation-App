@@ -1,9 +1,17 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class SpaManager {
 	
 	Scanner scanner = new Scanner(System.in);	
+	
+	private Hotel hotel;
+	
+	public SpaManager(Hotel hotel) {
+		this.hotel = hotel;
+	}
 	
 	Spa createSpa() {
   		int customerID = inputCustomerID();
@@ -17,17 +25,15 @@ public class SpaManager {
 		int customerID = 0;
 		while(true) {			
 			try {
-				System.out.println("Type the reservation ID to credit this service:");
-				customerID = scanner.nextInt();
+				customerID = Integer.parseInt(JOptionPane.showInputDialog("Type the reservation ID to credit this service:"));
 				if(Reservation.totalNumOfReservation < customerID || 0 >= customerID) {
 		  			throw new InvalidIDException("Invalid customer ID.");
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.err.println("\nID must be a numeric value!\n");
-				scanner.nextLine();
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, "ID must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} catch (InvalidIDException e) {
-				System.err.println(e.getMessage());
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return customerID;
@@ -37,12 +43,10 @@ public class SpaManager {
 		int days = 0;
 		while(true) {
 			try {
-				System.out.println("How many days?");
-				days = scanner.nextInt();		
+				days = Integer.parseInt(JOptionPane.showInputDialog("How many days?"));	
 				break;
 			} catch (InputMismatchException e) {
-				System.err.println("\nDays must be a numeric value!\n");
-				scanner.nextLine();
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, "Days must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}			
 		}
 		return days;

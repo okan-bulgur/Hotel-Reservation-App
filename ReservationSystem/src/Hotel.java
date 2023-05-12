@@ -12,6 +12,10 @@ public class Hotel {
 	public Map<Integer, Double> totalCostByID = new HashMap<Integer, Double>();
 	public ArrayList<Calculable> calculables = new ArrayList<Calculable>();
 	
+	
+	public ScreenManager screenManager;
+	public MenuScreen menuScreen;
+	
 	public CalculableManager calculableManager;
 	public ServicesManager servicesManager;
 	public ReservationManager reservationManager;
@@ -19,6 +23,9 @@ public class Hotel {
 	public BillManager billManager;
 	
 	public Hotel() {		
+		screenManager = new ScreenManager(this);
+		menuScreen = new MenuScreen(this);
+		
 		servicesManager = new ServicesManager(this);
 		reservationManager = new ReservationManager(this);
 		employeeManager = new EmployeeManager(this);
@@ -29,8 +36,10 @@ public class Hotel {
 	public static void main(String[] args) {
 		
 		Hotel hotel = new Hotel();
-		HotelMenu hotelMenu = new HotelMenu(hotel);
-		hotelMenu.displayHotelMenu();
+		
+		hotel.screenManager.setScreen(hotel.menuScreen);
+		hotel.screenManager.showScreen();
+
     }
 }
 

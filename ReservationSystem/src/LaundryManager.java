@@ -1,10 +1,17 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class LaundryManager {
 	
 	Scanner scanner = new Scanner(System.in);	
+	private Hotel hotel;
 	
+	public LaundryManager(Hotel hotel) {
+		this.hotel = hotel;
+	}
+
 	Laundry createLaundry() {
 		int customerID = inputCustomerID();
 		int piecesOfClothing = inputPiecesOfClothing();
@@ -17,17 +24,15 @@ public class LaundryManager {
 		int customerID = 0;
 		while(true) {			
 			try {
-				System.out.println("Type the reservation ID to credit this service:");
-				customerID = scanner.nextInt();
+				customerID = Integer.parseInt(JOptionPane.showInputDialog("Type the reservation ID to credit this service:"));
 				if(Reservation.totalNumOfReservation < customerID || 0 >= customerID) {
 		  			throw new InvalidIDException("Invalid customer ID.");
 				}
 				break;
 			} catch (InputMismatchException e) {
-				System.err.println("\nID must be a numeric value!\n");
-				scanner.nextLine();
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, "ID must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} catch (InvalidIDException e) {
-				System.err.println(e.getMessage());
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return customerID;
@@ -37,12 +42,10 @@ public class LaundryManager {
 		int piecesOfClothing = 0;
 		while(true) {
 			try {
-				System.out.println("How many pieces of clothing?");
-				piecesOfClothing = scanner.nextInt();		
+				piecesOfClothing = Integer.parseInt(JOptionPane.showInputDialog("How many pieces of clothing?"));		
 				break;
 			} catch (InputMismatchException e) {
-				System.err.println("\nClothing count must be a numeric value!\n");
-				scanner.nextLine();
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, "Clothing count must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}			
 		}
 		return piecesOfClothing;

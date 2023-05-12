@@ -99,9 +99,9 @@ public class Reservation extends Services implements Comparable<Reservation> {
 		}
 	}
 	
-	public void displayInfo() {
-		System.out.println("Reservation for a "+ getRoom().getRoomType() +" room in "+ getHotelName() +" starts on "+ getReservationMonth() +" "+ getReservationStart() +" and ends on "+ getReservationMonth() +" "+ getReservationEnd() +".");
-		System.out.println("Reservation has a total cost of $"+ getTotalCost() +"\n");
+	public void displayInfo(MenuScreen menuScreen) {
+		menuScreen.addText("Reservation for a "+ getRoom().getRoomType() +" room in "+ getHotelName() +" starts on "+ getReservationMonth() +" "+ getReservationStart() +" and ends on "+ getReservationMonth() +" "+ getReservationEnd() +".\n");
+		menuScreen.addText("Reservation has a total cost of $"+ getTotalCost() +"\n");
 	}
 	
 	public void displayTotalNumberOfReservation() {

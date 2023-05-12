@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class ReservationManager {
 	
@@ -28,7 +29,7 @@ public class ReservationManager {
 				roomType = inputRoomType();
 				break;
 			} catch (InvalidRoomTypeException e) {
-				System.err.println(e.getMessage());
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
@@ -37,7 +38,7 @@ public class ReservationManager {
 				reservationMonth = inputReservationMonth();
 				break;
 			} catch (InvalidMonthException e) {
-				System.err.println(e.getMessage());
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
@@ -75,14 +76,13 @@ public class ReservationManager {
 	}
 	
 	String inputHotelName() {
-		System.out.println("Hotel Name: ");
-  		String hotelName = scanner.nextLine();
+  		String hotelName = JOptionPane.showInputDialog("Hotel Name: ");
   		return hotelName;
 	}
 	
 	String inputReservationMonth() throws InvalidMonthException {
-		System.out.println("Reservation Month: ");
-  		String reservationMonth = scanner.nextLine().toLowerCase();
+		String reservationMonth = JOptionPane.showInputDialog("Reservation Month: ");
+  		reservationMonth = reservationMonth.toLowerCase();
   		
   		if(!Arrays.asList(months).contains(reservationMonth.toUpperCase())) {
   			throw new InvalidMonthException("\nInvalid input.\n");
@@ -94,16 +94,13 @@ public class ReservationManager {
 		int reservationStart = 0;
 		while(true) {
 			try {
-				System.out.println("Reservation Start: ");
-				reservationStart = scanner.nextInt();
+				reservationStart = Integer.parseInt( JOptionPane.showInputDialog("Reservation Start: "));
 				checkReservationStart(reservationStart);
 				break;
-			} catch (InputMismatchException e) {
-				System.err.println("\nReservation Start must be a numeric value!\n");
-				scanner.nextLine();
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, "Reservation Start must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} catch (InvalidReservationDateException e) {
-				System.err.println(e.getMessage());
-				scanner.nextLine();
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
   		return reservationStart;
@@ -113,24 +110,20 @@ public class ReservationManager {
 		int reservationEnd = 0;
 		while(true) {
 			try {
-				System.out.println("Reservation End: ");
-				reservationEnd = scanner.nextInt();
+				reservationEnd = Integer.parseInt( JOptionPane.showInputDialog("Reservation End: "));
 				checkReservationEnd(reservationStart, reservationEnd);		
 				break;
-			} catch (InputMismatchException e) {
-				System.err.println("\nReservation End must be a numeric value!\n");
-				scanner.nextLine();
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, "Reservation End must be a numeric value!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			} catch (InvalidReservationDateException e) {
-				System.err.println(e.getMessage());
-				scanner.nextLine();
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
   		return reservationEnd;
 	}
 	
 	String inputRoomType() throws InvalidRoomTypeException{
-		System.out.println("Hotel Type: ");
-		String roomType = scanner.nextLine();
+		String roomType = JOptionPane.showInputDialog("Hotel Type: ");
 		
 		if(!Arrays.asList(roomTypes).contains(roomType)) {
   			throw new InvalidRoomTypeException("Room Type is not valid!\n");
@@ -139,9 +132,7 @@ public class ReservationManager {
 	}
 	
 	String inputCityName() {
-		System.out.println("Type a city name for a reservation search: ");
-		String cityName = scanner.nextLine();
-		scanner.nextLine(); //to fix error
+		String cityName = JOptionPane.showInputDialog("Type a city name for a reservation search: ");
 		return cityName;
 	}
 	
@@ -159,11 +150,11 @@ public class ReservationManager {
 
 	void roomDisplay() {
 		if(hotel.reservations.size() == 0) {
-  			System.err.println("No room has been created yet.\n");
+			JOptionPane.showMessageDialog(hotel.menuScreen.frame, "No room has been created yet.", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
 			for(Reservation reservation : hotel.reservations) {
-				reservation.displayInfo();
+				reservation.displayInfo(hotel.menuScreen);
 			}
 		}
 	}
@@ -182,12 +173,12 @@ public class ReservationManager {
 				hotelName = reservation.getHotelName();
 				if(hotelName.contains(city)) {
 					check = true;
-					System.out.println(hotelName);
+					hotel.menuScreen.addText(hotelName + "\n");
 				}
 			}
 		}
 		if(!check) {
-			System.err.println("There is not reservation in " + city + "\n");
+			JOptionPane.showMessageDialog(hotel.menuScreen.frame, "There is not reservation in " + city , "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

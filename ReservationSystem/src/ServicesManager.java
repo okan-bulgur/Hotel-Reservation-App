@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 public class ServicesManager {
 	
 	Scanner scanner = new Scanner(System.in);	
@@ -14,8 +16,8 @@ public class ServicesManager {
 
 	public ServicesManager(Hotel hotel) {
 		this.hotel = hotel;
-		laundryManager = new LaundryManager();
-		spaManager = new SpaManager();
+		laundryManager = new LaundryManager(hotel);
+		spaManager = new SpaManager(hotel);
 	}
 	
 	void addReservation() {
@@ -29,18 +31,16 @@ public class ServicesManager {
 
 		hotel.calculables.add(reservation);
 		
-  		System.out.println("Reservation ID: " + Reservation.totalNumOfReservation + " is created\n");
+		hotel.menuScreen.addText("Reservation ID: " + Reservation.totalNumOfReservation + " is created\n\n");
 	}
 
 	void addExtraServices() {
 		if(Reservation.totalNumOfReservation == 0) {
-			System.out.println("There is not any reservation. Service cannot be used.");
+			JOptionPane.showMessageDialog(hotel.menuScreen.frame, "There is not any reservation. Service cannot be used.", "ERROR", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
-		System.out.println("Please select one of the extra services from below:");
-		System.out.println("1. Laundry Service \n2. Spa Service");
-  		int servicesNo = scanner.nextInt();
+		int servicesNo = Integer.parseInt(JOptionPane.showInputDialog("Please select one of the extra services from below:\n1. Laundry Service \n2. Spa Service\n"));
   		
   		Services service = null;
   		
@@ -57,7 +57,7 @@ public class ServicesManager {
 				break;
 				
 			default:
-				System.err.println("Invalid input.");
+				JOptionPane.showMessageDialog(hotel.menuScreen.frame, "Invalid input.", "ERROR", JOptionPane.ERROR_MESSAGE);
 				break;
 		}
   		
@@ -72,7 +72,7 @@ public class ServicesManager {
 	
 	void displayServices() {
 		if(hotel.services.size() == 0) {
-  			System.err.println("There is not service.");
+			JOptionPane.showMessageDialog(hotel.menuScreen.frame, "There is not any service.", "ERROR", JOptionPane.ERROR_MESSAGE);
   			return;
   		}
 		Set<Integer> ID = hotel.services.keySet();
@@ -82,20 +82,20 @@ public class ServicesManager {
 			Iterator<Services> itr = servicesByID.listIterator();
 			while(itr.hasNext()) {
 				Services ser = itr.next();
-				System.out.println(ser);
+				hotel.menuScreen.addText(ser + "\n");
 			}
 		}
 	}
 
 	void displayTotalCostByCustomer() {
 		if(hotel.services.size() == 0) {
-  			System.out.println("There is not any services.");
+			JOptionPane.showMessageDialog(hotel.menuScreen.frame, "There is not any service.", "ERROR", JOptionPane.ERROR_MESSAGE);
   			return;
   		}
 		
 		for(Integer ID : hotel.totalCostByID.keySet()) {
 			double totalCost = hotel.totalCostByID.get(ID);
-			System.out.println("The total cost of all services of the reservation with ID: "+ ID + " is " + totalCost);
+			hotel.menuScreen.addText("\nThe total cost of all services of the reservation with ID: "+ ID + " is " + totalCost);
 		}
 	}
 	
