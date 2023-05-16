@@ -20,10 +20,12 @@ public class ReservationManager {
 	}
 	
 	Reservation  createReservation() {
+		String cityName = inputCityName();
 		String hotelName = inputHotelName();
-		String roomType = null;
+		//String roomType = null;
 		String reservationMonth = null;
 		
+		/*
 		while(true) {			
 			try {			
 				roomType = inputRoomType();
@@ -32,6 +34,7 @@ public class ReservationManager {
 				JOptionPane.showMessageDialog(hotel.menuScreen.frame, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		*/
 		
 		while(true) {			
 			try {							
@@ -44,9 +47,9 @@ public class ReservationManager {
 		
 		int reservationStart = inputReservationStart();
 		int reservationEnd = inputReservationEnd(reservationStart);	
-		Room room = createRoom(roomType);	
+		//Room room = createRoom(roomType);	
 		
-		Reservation reservation = new Reservation(hotelName, reservationMonth, reservationStart, reservationEnd, room); 
+		Reservation reservation = new Reservation(cityName, hotelName, reservationMonth, reservationStart, reservationEnd); 
 		Reservation.totalNumOfReservation++;
 		
 		hotel.reservations.add(reservation);
@@ -132,7 +135,7 @@ public class ReservationManager {
 	}
 	
 	String inputCityName() {
-		String cityName = JOptionPane.showInputDialog("Type a city name for a reservation search: ");
+		String cityName = JOptionPane.showInputDialog("Enter City: ");
 		return cityName;
 	}
 	
@@ -164,16 +167,18 @@ public class ReservationManager {
 		Iterator<Reservation> itr = hotel.reservations.listIterator();
 		
 		Reservation reservation;
-		String hotelName;
+		String cityName;
 		boolean check = false;
+		
+		hotel.menuScreen.addText("Reservations for " + city + ":\n");
 
 		while(itr.hasNext()) {
 			reservation = itr.next();
 			if(reservation != null) {
-				hotelName = reservation.getHotelName();
-				if(hotelName.contains(city)) {
+				cityName = reservation.getCityName();
+				if(cityName.equals(city)) {
 					check = true;
-					hotel.menuScreen.addText(hotelName + "\n");
+					reservation.displayInfo(hotel.menuScreen);
 				}
 			}
 		}

@@ -38,4 +38,9 @@ public class Laundry extends Services{
 		return price * getClothingPieces();
 	}
 	
+	@Override
+	public String toString() {
+		return "has " + getClothingPieces() + " pieces assigned for Laundry Services." ;
+	}
+	
 }

@@ -34,5 +34,10 @@ public class Spa extends Services{
 	public double getCost()  {
 		return price * getDays();
 	}
-	
+
+	@Override
+	public String toString() {
+		return "has " + getDays() + " days of SPA Services." ;
+	}
+
 }

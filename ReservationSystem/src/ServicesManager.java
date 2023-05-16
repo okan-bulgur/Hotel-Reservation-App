@@ -27,11 +27,9 @@ public class ServicesManager {
 		servicesByID.add(reservation);
 		hotel.services.put(reservation.getCustomerID(), servicesByID);
 		
-		hotel.totalCostByID.put(Reservation.totalNumOfReservation, reservation.getCost());
+		//hotel.totalCostByID.put(Reservation.totalNumOfReservation, reservation.getCost());
 
-		hotel.calculables.add(reservation);
-		
-		hotel.menuScreen.addText("Reservation ID: " + Reservation.totalNumOfReservation + " is created\n\n");
+		//hotel.calculables.add(reservation);
 	}
 
 	void addExtraServices() {
@@ -65,8 +63,8 @@ public class ServicesManager {
   			ArrayList<Services> servicesByID = hotel.services.get(service.getCustomerID());
   			servicesByID.add(service);
   			hotel.services.put(service.getCustomerID(), servicesByID);
-  			hotel.totalCostByID.put(service.CustomerID, hotel.totalCostByID.get(service.CustomerID) + service.getCost());
-  			hotel.calculables.add(service);
+  			//hotel.totalCostByID.put(service.CustomerID, hotel.totalCostByID.get(service.CustomerID) + service.getCost());
+  			//hotel.calculables.add(service);
   		}
 	}
 	
@@ -82,7 +80,10 @@ public class ServicesManager {
 			Iterator<Services> itr = servicesByID.listIterator();
 			while(itr.hasNext()) {
 				Services ser = itr.next();
-				hotel.menuScreen.addText(ser + "\n");
+				if(ser instanceof Reservation) {
+					continue;
+				}
+				hotel.menuScreen.addText("Reservation ID #" + ser.getCustomerID() + " " + ser + "\n");
 			}
 		}
 	}

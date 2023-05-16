@@ -1,5 +1,6 @@
 public class Reservation extends Services implements Comparable<Reservation> {
 	
+	private String _cityName;
 	private String _hotelName;
 	private String _reservationMonth;
 	private int _reservationStart;
@@ -11,15 +12,20 @@ public class Reservation extends Services implements Comparable<Reservation> {
 	public static int totalNumOfReservation = 0;
 	
 	
-	public Reservation(String hotelName, String reservationMonth, int reservationStart, int reservationEnd, Room room) {
+	public Reservation(String cityName, String hotelName, String reservationMonth, int reservationStart, int reservationEnd) {
+		setCityName(cityName);
 		setHotelName(hotelName);
 		setReservationMonth(reservationMonth);
 		setReservationStart(reservationStart);
 		setReservationEnd(reservationEnd);
-		setRoom(room);
-		setDailyCost();
-		calculateTotalPrice();
+		//setRoom(room);
+		//setDailyCost();
+		//calculateTotalPrice();
 		setCustomerID(totalNumOfReservation + 1);
+	}
+	
+	public void setCityName(String cityName) {
+		this._cityName = cityName;
 	}
 	
 	public void setHotelName(String hotelName) {
@@ -48,6 +54,10 @@ public class Reservation extends Services implements Comparable<Reservation> {
 	
 	public void setTotalCost(int totalCost) {
 		this._totalCost = totalCost;
+	}
+	
+	public String getCityName() {
+		return _cityName;
 	}
 	
 	public String getHotelName() {
@@ -100,8 +110,8 @@ public class Reservation extends Services implements Comparable<Reservation> {
 	}
 	
 	public void displayInfo(MenuScreen menuScreen) {
-		menuScreen.addText("Reservation for a "+ getRoom().getRoomType() +" room in "+ getHotelName() +" starts on "+ getReservationMonth() +" "+ getReservationStart() +" and ends on "+ getReservationMonth() +" "+ getReservationEnd() +".\n");
-		menuScreen.addText("Reservation has a total cost of $"+ getTotalCost() +"\n");
+		menuScreen.addText("Reservation ID #" + getCustomerID() + "\n");
+		menuScreen.addText("Reservation at " + getHotelName() + " starts on " + getReservationMonth() + " " + getReservationStart() + " and ends on " + getReservationMonth() + " " + getReservationEnd() + "\n");
 	}
 	
 	public void displayTotalNumberOfReservation() {
