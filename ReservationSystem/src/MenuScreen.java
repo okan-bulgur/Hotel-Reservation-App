@@ -112,12 +112,13 @@ public class MenuScreen extends ScreenManager {
 		JPanel btnPanel = new JPanel();
 		
 		JButton btn1 = new JButton("Display Reservation");
-		JButton btn2 = new JButton("Display Extra Reservation");
+		JButton btn2 = new JButton("Display Extra Services");
 		JButton btn3 = new JButton("Disp. Res. For City");
 		
 		btn1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				textArea.setText("");
 				hotel.reservationManager.roomDisplay();
 			}
 		});
@@ -125,6 +126,7 @@ public class MenuScreen extends ScreenManager {
 		btn2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				textArea.setText("");
 				hotel.servicesManager.displayServices();
 			}
 		});
@@ -132,6 +134,7 @@ public class MenuScreen extends ScreenManager {
 		btn3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				textArea.setText("");
 				hotel.reservationManager.displayReservationByCity();
 			}
 		});
@@ -154,7 +157,6 @@ public class MenuScreen extends ScreenManager {
 	private void createTextArea() {
 		textArea = new JTextArea();
 		textArea.setEnabled(false);
-		
 	}
 	
 	public void addText(String message) {

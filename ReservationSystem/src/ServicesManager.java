@@ -70,7 +70,7 @@ public class ServicesManager {
 	
 	void displayServices() {
 		if(hotel.services.size() == 0) {
-			JOptionPane.showMessageDialog(hotel.menuScreen.frame, "There is not any service.", "ERROR", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(hotel.menuScreen.frame, "There is not any reservation.", "ERROR", JOptionPane.ERROR_MESSAGE);
   			return;
   		}
 		Set<Integer> ID = hotel.services.keySet();
