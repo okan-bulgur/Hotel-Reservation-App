@@ -1,6 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -84,7 +87,8 @@ public class MenuScreen extends ScreenManager {
 						+ "2) You can create services in new menu.\n"
 						+ "3) You can display all reservation with Display Reservation button.\n"
 						+ "4) You can display all services with Display Extra Services button.\n"
-						+ "5) You can display reservation by specific city with Display Reservation For City button.";
+						+ "5) You can display reservation by specific city with Display Reservation For City button.\n"
+						+ "6) You can display reservation ID's by hotel name.";
  				JOptionPane.showMessageDialog(frame, message);
 			}
 		});
@@ -110,10 +114,15 @@ public class MenuScreen extends ScreenManager {
 
 	private JPanel createBtnPanel() {
 		JPanel btnPanel = new JPanel();
+		GridLayout layout = new GridLayout(2,2);
+		layout.setHgap(5);
+		layout.setVgap(5);
+		btnPanel.setLayout(layout);
 		
 		JButton btn1 = new JButton("Display Reservation");
 		JButton btn2 = new JButton("Display Extra Services");
 		JButton btn3 = new JButton("Disp. Res. For City");
+		JButton btn4 = new JButton("Multithread Search");
 		
 		btn1.addActionListener(new ActionListener() {
 			@Override
@@ -139,17 +148,23 @@ public class MenuScreen extends ScreenManager {
 			}
 		});
 		
+		btn4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textArea.setText("");
+				hotel.multithreadSearch.search();
+			}
+		});
+		
 		btn1.setPreferredSize(new Dimension(200,30));
 		btn2.setPreferredSize(new Dimension(200,30));
 		btn3.setPreferredSize(new Dimension(200,30));
-		
-		btn1.setBackground(Color.white);
-		btn2.setBackground(Color.white);
-		btn3.setBackground(Color.white);
+		btn4.setPreferredSize(new Dimension(200,30));
 		
 		btnPanel.add(btn1);
 		btnPanel.add(btn2);
 		btnPanel.add(btn3);
+		btnPanel.add(btn4);
 		
 		return btnPanel;
 	}
@@ -160,7 +175,9 @@ public class MenuScreen extends ScreenManager {
 	}
 	
 	public void addText(String message) {
-		 textArea.append(message);
+		textArea.setFont(new Font("Arial", Font.BOLD, 15));
+		textArea.setDisabledTextColor(Color.BLACK);
+		textArea.append(message);
 	}
 }
 

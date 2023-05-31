@@ -21,6 +21,7 @@ public class Hotel {
 	public ReservationManager reservationManager;
 	public EmployeeManager employeeManager;
 	public BillManager billManager;
+	public MultithreadSearch multithreadSearch;
 	
 	public Hotel() {		
 		screenManager = new ScreenManager(this);
@@ -31,6 +32,7 @@ public class Hotel {
 		employeeManager = new EmployeeManager(this);
 		billManager = new BillManager(this);
 		calculableManager = new CalculableManager(this);
+		multithreadSearch = new MultithreadSearch(this);
 	}
 	
 	public static void main(String[] args) {
