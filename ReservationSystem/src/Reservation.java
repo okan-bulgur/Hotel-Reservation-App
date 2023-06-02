@@ -110,8 +110,7 @@ public class Reservation extends Services implements Comparable<Reservation> {
 	}
 	
 	public void displayInfo(MenuScreen menuScreen) {
-		menuScreen.addText("Reservation ID #" + getCustomerID() + "\n");
-		menuScreen.addText("Reservation at " + getHotelName() + " starts on " + getReservationMonth() + " " + getReservationStart() + " and ends on " + getReservationMonth() + " " + getReservationEnd() + "\n");
+		menuScreen.addText("Reservation ID #" + getCustomerID() + " at " + getHotelName() + " starts on " + getReservationMonth() + " " + getReservationStart() + " and ends on " + getReservationMonth() + " " + getReservationEnd() + "\n");
 	}
 	
 	public void displayTotalNumberOfReservation() {

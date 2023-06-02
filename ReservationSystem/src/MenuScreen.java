@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +18,7 @@ public class MenuScreen extends ScreenManager {
 
 	public JFrame frame;
 	private JTextArea textArea;
+	private boolean isLoaded = false;
 	
 	private int width = 800;
 	private int height = 600;
@@ -39,6 +39,9 @@ public class MenuScreen extends ScreenManager {
 		
 		createTextArea();
 		frame.add(textArea, BorderLayout.CENTER);
+		
+		JPanel btnPanel2 = fileBtnPanel();
+		frame.add(btnPanel2, BorderLayout.SOUTH);
 		
 		createMenuBar();
 	
@@ -169,13 +172,53 @@ public class MenuScreen extends ScreenManager {
 		return btnPanel;
 	}
 	
+	private JPanel fileBtnPanel() {
+		JPanel panel = new JPanel();
+		GridLayout layout = new GridLayout(1,1);
+		layout.setHgap(5);
+		panel.setLayout(layout);
+		
+		JButton btn1 = new JButton("Save Reservations");
+		JButton btn2 = new JButton("Load Reservations");
+		
+		btn1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hotel.fileManager.saveReservations();
+				JOptionPane.showMessageDialog(frame, "Saved");
+			}
+		});
+		
+		btn2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(isLoaded) {
+					JOptionPane.showMessageDialog(frame, "File is already loaded.");
+					return;
+				}
+				textArea.setText("");
+				hotel.fileManager.loadReservations();
+				isLoaded = true;
+				
+			}
+		});
+		
+		btn1.setPreferredSize(new Dimension(200,30));
+		btn2.setPreferredSize(new Dimension(200,30));
+		
+		panel.add(btn1);
+		panel.add(btn2);
+		
+		return panel;
+	}
+	
 	private void createTextArea() {
 		textArea = new JTextArea();
 		textArea.setEnabled(false);
 	}
 	
 	public void addText(String message) {
-		textArea.setFont(new Font("Arial", Font.BOLD, 15));
+		textArea.setFont(new Font("Arial", Font.PLAIN, 15));
 		textArea.setDisabledTextColor(Color.BLACK);
 		textArea.append(message);
 	}
