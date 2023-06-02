@@ -21,6 +21,7 @@ public class FileManager {
 				FileWriter writer1 = new FileWriter(FILE_PATH);
 				BufferedWriter bufferedWriter1 = new BufferedWriter(writer1);
 				bufferedWriter1.write("");				
+				bufferedWriter1.close();
 			}
 			
 			FileWriter writer = new FileWriter(FILE_PATH, true);
@@ -61,6 +62,7 @@ public class FileManager {
 				hotel.services.put(Reservation.totalNumOfReservation, servicesByID);
 				loadReservation.displayInfo(hotel.menuScreen);
 			}
+			bufferedReader.close();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
